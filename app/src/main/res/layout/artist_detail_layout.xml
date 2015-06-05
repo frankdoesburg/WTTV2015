@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/vegetable_detail"
     android:layout_width="match_parent"
@@ -18,10 +17,10 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/vegetable_detail_title"
+                android:id="@+id/artistNameTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/teal"
+                android:background="@color/black"
                 android:paddingBottom="50dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
@@ -29,53 +28,39 @@
                 android:text="title"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white"
-                android:visibility="invisible" />
+                 />
 
             <ImageButton
                 android:id="@+id/timer_button"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/vegetable_detail_title"
+                android:layout_below="@+id/artistNameTV"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="-40dp"
                 android:background="@drawable/circle"
-                android:src="@mipmap/ic_launcher"
-                android:visibility="invisible" />
+                android:src="@mipmap/ic_launcher"/>
 
             <TextView
-                android:id="@+id/vegetable_detail_time"
+                android:id="@+id/timeDayTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/vegetable_detail_title"
+                android:layout_below="@+id/artistNameTV"
                 android:layout_margin="@dimen/activity_horizontal_margin"
-                android:text="Cooking time 15-20 min"
+                android:text="Vrijdag 14:00 podium Zuid"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/vegetable_detail_description_title"
+                android:id="@+id/descriptionTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/vegetable_detail_time"
+                android:layout_below="@+id/timeDayTV"
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:text="text"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/vegetable_detail_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/vegetable_detail_description_title"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="0dp"
-                android:text="Description text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>
