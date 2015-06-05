@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">WTTV</string>
+    <string name="app_name">WTTV 2015</string>
+    <string name="main_activity">WTTV 2015</string>
+    <string name="news">NIEUWS</string>
+    <string name="acts">ACTS</string>
+    <string name="timetable">BLOKKENSCHEMA</string>
+    <string name="favorites">FAVORIETEN</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="about">Copyright 2015 De Appothekers</string>
     <string name="action_settings">Settings</string>
 </resources>
