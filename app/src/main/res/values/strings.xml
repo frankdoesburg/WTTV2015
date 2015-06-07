@@ -2,7 +2,8 @@
     <string name="app_name">WTTV 2015</string>
     <string name="main_activity">WTTV 2015</string>
     <string name="news">NIEUWS</string>
-    <string name="acts">ACTS</string>
+    <string name="acts">PROGRAMMA</string>
+    <string name="act">ACT</string>
     <string name="timetable">BLOKKENSCHEMA</string>
     <string name="favorites">FAVORIETEN</string>
 

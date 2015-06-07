@@ -1,16 +1,13 @@
 package com.frankd.wttv;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
@@ -22,6 +19,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //set custom font to action bar
+        SpannableString s = new SpannableString(getString(R.string.main_activity));
+        s.setSpan(new TypefaceSpan(this,"big_noodle_titling.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Update the action bar title with the TypefaceSpan instance
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle(s);
+
 
         //initialize ListView
         LinearLayout news = (LinearLayout) findViewById(R.id.news);
