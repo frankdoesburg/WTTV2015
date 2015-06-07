@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customAttrs="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/textHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_darker_transparent"
+        android:layout_alignParentBottom="true"
+        android:padding="5dp"
+        >
+
+        <com.frankd.wttv.CustomFontTextView
+            android:id="@+id/artistNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Artiest naam"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            customAttrs:customFont="OSWALD_REGULAR"
+            android:textColor="@color/white"/>
+
+        <com.frankd.wttv.CustomFontTextView
+            android:id="@+id/timeDayTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vrijdag 18:00 -19:30"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            customAttrs:customFont="OSWALD_REGULAR"
+            android:textColor="@color/white"
+            android:layout_below="@+id/artistNameTV"/>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
