@@ -13,6 +13,9 @@ public class FavoritesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorites_layout);
 
+        //allow backward navigation to parent activity via actionbar
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         ListView listView = (ListView) findViewById(R.id.listView);
 
     }

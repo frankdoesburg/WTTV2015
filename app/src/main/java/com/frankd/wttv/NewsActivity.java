@@ -13,6 +13,9 @@ public class NewsActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_layout);
 
+        //allow backward navigation to parent activity via actionbar
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         ListView listView = (ListView) findViewById(R.id.listView);
 
     }

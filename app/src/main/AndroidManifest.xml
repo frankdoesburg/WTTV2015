@@ -20,26 +20,32 @@
         <activity
             android:name=".NewsActivity"
             android:label="@string/news"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity" >>
         </activity>
         <activity
             android:name=".ArtistListActivity"
             android:label="@string/acts"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".ArtistDetailActivity"
             android:label="@string/acts"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ArtistListActivity">
         </activity>
         <activity
             android:name=".TimetableActivity"
             android:label="@string/timetable"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".FavoritesActivity"
             android:label="@string/favorites"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
             >
         </activity>
     </application>

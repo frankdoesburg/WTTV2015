@@ -18,6 +18,9 @@ public class ArtistListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artist_list_layout);
 
+        //allow backward navigation to parent activity via actionbar
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         GridView artistGrid = (GridView) findViewById(R.id.gridView);
         ArtistListAdapter adapter = new ArtistListAdapter(this,getArtistList());
         artistGrid.setAdapter(adapter);

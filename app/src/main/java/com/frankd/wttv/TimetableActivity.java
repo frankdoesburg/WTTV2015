@@ -12,6 +12,9 @@ public class TimetableActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_layout);
 
+        //allow backward navigation to parent activity via actionbar
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 
     }

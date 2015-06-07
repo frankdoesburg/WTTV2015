@@ -12,6 +12,8 @@ public class ArtistDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artist_detail_layout);
 
+        //allow backward navigation to parent activity via actionbar
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
 
     }
