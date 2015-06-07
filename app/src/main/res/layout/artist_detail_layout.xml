@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:customAttrs="http://schemas.android.com/apk/res-auto"
     android:id="@+id/vegetable_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <com.frankd.wttv.CustomFontTextView
                 android:id="@+id/artistNameTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,6 +29,7 @@
                 android:text="title"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white"
+                customAttrs:customFont="OSWALD_REGULAR"
                  />
 
             <ImageButton
@@ -39,18 +41,25 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="-40dp"
                 android:background="@drawable/circle"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/heart_open"
+                android:paddingBottom="18dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="22dp"
+                android:scaleType="fitCenter"
+                />
 
-            <TextView
+            <com.frankd.wttv.CustomFontTextView
                 android:id="@+id/timeDayTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/artistNameTV"
                 android:layout_margin="@dimen/activity_horizontal_margin"
                 android:text="Vrijdag 14:00 podium Zuid"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                customAttrs:customFont="OSWALD_REGULAR"/>
 
-            <TextView
+            <com.frankd.wttv.CustomFontTextView
                 android:id="@+id/descriptionTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +69,8 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:text="text"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                customAttrs:customFont="OSWALD_REGULAR"/>
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>
