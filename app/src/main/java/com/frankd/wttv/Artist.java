@@ -7,12 +7,17 @@ public class Artist {
     private int ID;
     private String name;
     private String description;
-    private Day day;
-    private Stage stage;
+    private String day;
+    private String stage;
     private String time;
+    private String youtubeLink;
     private int thumbnailImageId;
 
-    public Artist(int ID, String name, String description, Day day, Stage stage, String time){
+    public Artist(){
+        //do nothing
+    }
+
+    public Artist(int ID, String name, String description, String day, String stage, String time){
         this.name = name;
         this.description = description;
         this.day = day;
@@ -20,13 +25,21 @@ public class Artist {
         this.time = time;
     }
 
-    public Artist(int ID,String name, String description, Day day, Stage stage, String time, int squareImageId){
+    public Artist(int ID,String name, String description, String day, String stage, String time, int squareImageId){
         this.name = name;
         this.description = description;
         this.day = day;
         this.stage = stage;
         this.time = time;
         this.thumbnailImageId = squareImageId;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getName() {
@@ -45,19 +58,19 @@ public class Artist {
         this.description = description;
     }
 
-    public Day getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(Day day) {
+    public void setDay(String day) {
         this.day = day;
     }
 
-    public Stage getStage() {
+    public String getStage() {
         return stage;
     }
 
-    public void setStage(Stage stage) {
+    public void setStage(String stage) {
         this.stage = stage;
     }
 
@@ -75,5 +88,17 @@ public class Artist {
 
     public void setThumbnailImageId(int thumbnailImageId) {
         this.thumbnailImageId = thumbnailImageId;
+    }
+
+    public String getYoutubeLink() {
+        return youtubeLink;
+    }
+
+    public void setYoutubeLink(String youtubeLink) {
+        this.youtubeLink = youtubeLink;
+    }
+
+    public String toString(){
+        return "ID: " + ID + ", name: " + name;
     }
 }

@@ -2,19 +2,24 @@ package com.frankd.wttv;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.database.SQLException;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.widget.GridView;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Created by FrankD on 5-6-2015.
  */
 public class ArtistListActivity extends Activity {
-
+    private static final String TAG = "ArtistListActivity";
+    private ArrayList<Artist> artistList;
 
     @Override
        protected void onCreate(Bundle savedInstanceState) {
@@ -33,30 +38,69 @@ public class ArtistListActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setTitle(s);
 
+        //get artist list from database
+        artistList = getArtistsFromDB();
+        /*
+        for(Artist artist: artistList){
+            Log.v(TAG, "loaded artist from DB: " + artist.getID() + " name: " + artist.getName());
+        }
+        */
+
+        //set images for each artist
+        setArtistImagesResourceID();
+
         GridView artistGrid = (GridView) findViewById(R.id.gridView);
-        ArtistListAdapter adapter = new ArtistListAdapter(this,getArtistList());
+        ArtistListAdapter adapter = new ArtistListAdapter(this,artistList);
         artistGrid.setAdapter(adapter);
 
     }
 
-    public ArrayList<Artist> getArtistList(){
-        ArrayList<Artist> artists = new ArrayList<Artist>();
+    //finds images in drawable folder and gets their resource ID
+    public void setArtistImagesResourceID(){
+        for(Artist artist:artistList){
+            int ID = artist.getID();
 
-        for(int i = 0; i < 40; i++){
-           if(i%4 == 0){
-                artists.add(new Artist(i,"DEUS", "beschrijving hier", Day.FRIDAY, Stage.STAGE1, "14:30",R.mipmap.deus_vierkant));
-            }else if(i%3==0){
-               artists.add(new Artist(i,"TYPHOON", "beschrijving hier", Day.FRIDAY, Stage.STAGE1, "14:30",R.mipmap.typhoon_vierkant));
-           }else if(i%2==0){
-               artists.add(new Artist(i,"DEWOLFF", "beschrijving hier", Day.FRIDAY, Stage.STAGE1, "14:30",R.mipmap.dewolff_vierkant));
-           }else{
-               artists.add(new Artist(i,"GOD DAMN", "beschrijving hier", Day.FRIDAY, Stage.STAGE1, "14:30",R.mipmap.goddamn_vierkant));
-           }
+            try{
+                String uri = "img" + ID; //creates filename dynamically, e.g. img3 or img4
+                int imageID = getResources().getIdentifier(uri,"drawable", getPackageName());
 
+               // Log.v(TAG,"created image ID : " + imageID + " for " + uri);
+                artist.setThumbnailImageId(imageID);
+
+            }catch(NullPointerException E){
+                Log.v(TAG,"could not load image with ID " + ID + " and acts name " + artist.getName());
+            }
+        }
+
+
+    }
+
+    public ArrayList<Artist> getArtistsFromDB(){
+        DataBaseHelper myDbHelper = new DataBaseHelper(this);
+        myDbHelper = new DataBaseHelper(this);
+
+        try {
+
+            myDbHelper.createDataBase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
 
         }
-        DataStore.artists = artists;
-        return artists;
+
+        try {
+
+            myDbHelper.openDataBase();
+
+        }catch(SQLException sqle){
+
+            throw sqle;
+
+        }
+
+        myDbHelper.close();
+        return myDbHelper.getAllArtistsFromDB();
     }
 
 
