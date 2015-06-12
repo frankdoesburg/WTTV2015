@@ -9,7 +9,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1">
 
         <RelativeLayout
@@ -17,59 +17,83 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.frankd.wttv.CustomFontTextView
-                android:id="@+id/artistNameTV"
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/topPanel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:paddingBottom="50dp"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="50dp"
-                android:text="title"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white"
-                customAttrs:customFont="OSWALD_REGULAR"
-                 />
 
-            <ImageButton
-                android:id="@+id/timer_button"
+                >
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@color/white"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/imageView"
+                    android:background="@color/gray_darker_transparent"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    >
+
+                <com.frankd.wttv.CustomFontTextView
+                    android:id="@+id/artistNameTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="artist name"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/white"
+                    customAttrs:customFont="OSWALD_REGULAR"
+                    />
+
+                <com.frankd.wttv.CustomFontTextView
+                    android:id="@+id/timeDayTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vrijdag 18:00 -19:30"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    customAttrs:customFont="OSWALD_REGULAR"
+                    android:textColor="@color/white"
+                    android:layout_below="@+id/artistNameTV"/>
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+
+            <com.frankd.wttv.DiamondButton
+                android:id="@+id/favoriteButton"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/artistNameTV"
+                android:layout_below="@+id/topPanel"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="-40dp"
-                android:background="@drawable/circle"
                 android:src="@mipmap/heart_open"
+                android:background="@null"
                 android:paddingBottom="18dp"
                 android:paddingLeft="18dp"
                 android:paddingRight="18dp"
-                android:paddingTop="22dp"
+                android:paddingTop="24dp"
                 android:scaleType="fitCenter"
                 />
 
-            <com.frankd.wttv.CustomFontTextView
-                android:id="@+id/timeDayTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/artistNameTV"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                android:text="Vrijdag 14:00 podium Zuid"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                customAttrs:customFont="OSWALD_REGULAR"/>
+
 
             <com.frankd.wttv.CustomFontTextView
                 android:id="@+id/descriptionTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/timeDayTV"
-                android:layout_marginBottom="0dp"
+                android:layout_below="@+id/favoriteButton"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:text="text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 customAttrs:customFont="OSWALD_REGULAR"/>
         </RelativeLayout>
     </ScrollView>

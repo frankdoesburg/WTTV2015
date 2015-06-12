@@ -4,10 +4,18 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +50,24 @@ public class ArtistDetailActivity extends Activity {
         CustomFontTextView timeDayTV = (CustomFontTextView) findViewById(R.id.timeDayTV);
 
 
-        //get artist
+        //get screen width and size the imageview accordingly
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        float width = displaymetrics.widthPixels; //screen width
+        float imageHeight = (width/3)*2; //height of the image must me 2/3 of the width
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams((int)width,(int)imageHeight);
+        imageView.setLayoutParams(parms);
+
+        //get top layout that contains textviews and imageview
+        RelativeLayout topPanel = (RelativeLayout) findViewById(R.id.topPanel);
+        //get button
+        final ImageButton favoriteButton = (ImageButton) findViewById(R.id.favoriteButton);
+        //set button and top panel invisible initially
+        favoriteButton.setVisibility(View.INVISIBLE);
+        topPanel.setVisibility(View.INVISIBLE);
+
+        //get artist ID from intent
         try{
             Intent intent = getIntent();
             int ID = intent.getIntExtra("ID",-1);
@@ -55,6 +80,32 @@ public class ArtistDetailActivity extends Activity {
         }catch (Exception E){
             Log.v(TAG, "could not find artist with in database");
         }
+
+
+        //animation
+        final Animation btnAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right2left);
+        Animation titleAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+
+        //setTimerBtn.startAnimation(btnAnimation);
+        titleAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                favoriteButton.setVisibility(View.VISIBLE);
+                favoriteButton.startAnimation(btnAnimation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        topPanel.setVisibility(View.VISIBLE);
+        topPanel.startAnimation(titleAnimation);
+
 
     }
 
