@@ -18,12 +18,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewsActivity"
-            android:label="@string/news"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity" >>
-        </activity>
-        <activity
             android:name=".ArtistListActivity"
             android:label="@string/acts"
             android:screenOrientation="portrait"

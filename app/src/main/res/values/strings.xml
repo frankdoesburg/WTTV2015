@@ -7,6 +7,10 @@
     <string name="timetable">BLOKKENSCHEMA</string>
     <string name="favorites">FAVORIETEN</string>
 
+    <string name="drawer_open">open menu</string>
+    <string name="drawer_close">sluit menu</string>
+
+
     <string name="about">Copyright 2015 De Appothekers</string>
     <string name="action_settings">Settings</string>
 </resources>

@@ -72,7 +72,7 @@
                 android:layout_below="@+id/topPanel"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="-40dp"
-                android:src="@mipmap/heart_open"
+                android:src="@drawable/heart_open"
                 android:background="@null"
                 android:paddingBottom="18dp"
                 android:paddingLeft="18dp"

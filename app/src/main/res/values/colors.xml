@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="actionbar_background">@color/gray_black</color>
+    <color name="textColor">@color/white</color>
+
     <color name="white">#FFFFFF</color>
     <color name="gray_lighter">#dcdcdc</color>
     <color name="gray_light">#808080</color>
     <color name="gray_dark">#616161</color>
     <color name="gray_darker">#222222</color>
+    <color name="gray_black">#333333</color>
     <color name="gray_darker_transparent">#CC222222</color>
     <color name="black">#000000</color>
     <color name="yellow">#FACB47</color>
@@ -22,6 +27,7 @@
     <color name="orange_dark">#E54028</color>
     <color name="pink">#D70060</color>
     <color name="teal">#009688</color>
+    <color name="teal_light">#05EBD5</color>
     <color name="listcolor0">#009688</color>
     <color name="listcolor1">#E91E63</color>
     <color name="listcolor2">#9C27B0</color>
