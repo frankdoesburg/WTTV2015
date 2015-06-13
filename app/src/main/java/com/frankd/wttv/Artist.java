@@ -11,7 +11,8 @@ public class Artist {
     private String stage;
     private String time;
     private String youtubeLink;
-    private int thumbnailImageId;
+    private int thumbnailImageId; //id of thumbnail square image
+    private int largeImageID; //id of 3x2 size large image
 
     public Artist(){
         //do nothing
@@ -82,12 +83,21 @@ public class Artist {
         this.time = time;
     }
 
+
     public int getThumbnailImageId() {
         return thumbnailImageId;
     }
 
     public void setThumbnailImageId(int thumbnailImageId) {
         this.thumbnailImageId = thumbnailImageId;
+    }
+
+    public int getLargeImageID() {
+        return largeImageID;
+    }
+
+    public void setLargeImageID(int largeImageID) {
+        this.largeImageID = largeImageID;
     }
 
     public String getYoutubeLink() {

@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.io.IOException;
@@ -81,6 +82,12 @@ public class ArtistDetailActivity extends Activity {
             Log.v(TAG, "could not find artist with in database");
         }
 
+        try{
+            setArtistImagesResourceID();
+            imageView.setImageResource(artist.getLargeImageID());
+        }catch(Exception E){
+            Log.v(TAG, "could not load artist image");
+        }
 
         //animation
         final Animation btnAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right2left);
@@ -136,5 +143,33 @@ public class ArtistDetailActivity extends Activity {
         myDbHelper.close();
         return myDbHelper.getArtistFromDB(ID);
     }
+
+    //finds images in drawable folder and gets their resource ID in the artist object
+    public void setArtistImagesResourceID(){
+            int ID = artist.getID();
+
+            try{
+                String uri = "act" + ID; //creates filename dynamically, e.g. act3 or act4 (skip the .jpg or .png suffix)
+                int imageID = getResources().getIdentifier(uri,"drawable", getPackageName());
+
+                // Log.v(TAG,"created image ID : " + imageID + " for " + uri);
+                artist.setThumbnailImageId(imageID);
+
+            }catch(NullPointerException E){
+                Log.v(TAG,"could not load image with ID " + ID + " and acts name " + artist.getName());
+            }
+
+            try{
+                String uri = "act" + ID + "_large"; //creates filename dynamically, e.g. act3 or act4 (skip the .jpg or .png suffix)
+                int imageID = getResources().getIdentifier(uri,"drawable", getPackageName());
+
+                // Log.v(TAG,"created image ID : " + imageID + " for " + uri);
+                artist.setLargeImageID(imageID);
+
+            }catch(NullPointerException E){
+                Log.v(TAG,"could not load image with ID " + ID + " and acts name " + artist.getName());
+            }
+
+        }
 
 }

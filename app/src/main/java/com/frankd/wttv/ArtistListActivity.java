@@ -55,13 +55,13 @@ public class ArtistListActivity extends Activity {
 
     }
 
-    //finds images in drawable folder and gets their resource ID
+    //finds images in drawable folder and gets their resource ID in the artist object
     public void setArtistImagesResourceID(){
         for(Artist artist:artistList){
             int ID = artist.getID();
 
             try{
-                String uri = "img" + ID; //creates filename dynamically, e.g. img3 or img4
+                String uri = "act" + ID; //creates filename dynamically, e.g. act3 or act4 (skip the .jpg or .png suffix)
                 int imageID = getResources().getIdentifier(uri,"drawable", getPackageName());
 
                // Log.v(TAG,"created image ID : " + imageID + " for " + uri);
@@ -70,6 +70,18 @@ public class ArtistListActivity extends Activity {
             }catch(NullPointerException E){
                 Log.v(TAG,"could not load image with ID " + ID + " and acts name " + artist.getName());
             }
+
+            try{
+                String uri = "act" + ID + "_large"; //creates filename dynamically, e.g. act3 or act4 (skip the .jpg or .png suffix)
+                int imageID = getResources().getIdentifier(uri,"drawable", getPackageName());
+
+                // Log.v(TAG,"created image ID : " + imageID + " for " + uri);
+                artist.setLargeImageID(imageID);
+
+            }catch(NullPointerException E){
+                Log.v(TAG,"could not load image with ID " + ID + " and acts name " + artist.getName());
+            }
+
         }
 
 
