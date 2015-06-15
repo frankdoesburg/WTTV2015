@@ -17,9 +17,11 @@ import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 /**
@@ -53,11 +55,20 @@ public class TimetableActivity extends Activity {
         //set timetable image
         TouchImageView imgView = (TouchImageView)findViewById(R.id.imageView);
         imgView.setImageResource(R.drawable.blokkenschema_northsea);
+        imgView.setScrollPosition(0, 0);
 
        //TODO: scroll to top left of imageview
 
         initMenuDrawer();
 
+
+    }
+
+    @Override
+    public void onResume(){
+        TouchImageView imgView = (TouchImageView)findViewById(R.id.imageView);
+        imgView.setScrollPosition(0, 0);
+        super.onResume();
     }
 
     public void initMenuDrawer(){
@@ -103,7 +114,8 @@ public class TimetableActivity extends Activity {
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -121,6 +133,14 @@ public class TimetableActivity extends Activity {
                 mDrawerLayout.closeDrawers();
                 //Intent intent = new Intent(getApplicationContext(),TimetableActivity.class);
                 //startActivity(intent);
+            }
+        });
+
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),MapActivity.class);
+                startActivity(intent);
             }
         });
 

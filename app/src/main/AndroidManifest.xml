@@ -36,6 +36,12 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
+            android:name=".MapActivity"
+            android:label="@string/map"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
             android:name=".FavoritesActivity"
             android:label="@string/favorites"
             android:screenOrientation="portrait"

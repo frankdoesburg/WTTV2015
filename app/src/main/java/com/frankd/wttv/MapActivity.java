@@ -9,16 +9,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Spannable;
 import android.text.SpannableString;
+
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
-
-public class MainActivity extends Activity {
-    private static final String TAG = "MainActivity";
+/**
+ * Created by FrankD on 5-6-2015.
+ */
+public class MapActivity extends Activity {
+    private static final String TAG = "MapActivity";
 
     //layout of navigation drawer
     private DrawerLayout mDrawerLayout;
@@ -28,10 +38,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.map_layout);
+
+        //allow backward navigation to parent activity via actionbar
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //set custom font to action bar
-        SpannableString s = new SpannableString(getString(R.string.main_activity));
+        SpannableString s = new SpannableString(getString(R.string.map));
         s.setSpan(new TypefaceSpan(this, "big_noodle_titling.ttf"), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -39,12 +52,15 @@ public class MainActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setTitle(s);
 
-        //initialize news feed and listview
-        ListView listView = (ListView) findViewById(R.id.listView);
-        //TODO: set listview adapter
-        //TODO: get news from feed if user has acces to internet
+        //set timetable image
+        TouchImageView imgView = (TouchImageView)findViewById(R.id.imageView);
+        imgView.setImageResource(R.drawable.wttv_plattegrond);
+        imgView.setScrollPosition(0, 0);
+
+        //TODO: scroll to top left of imageview
 
         initMenuDrawer();
+
 
     }
 
@@ -86,14 +102,13 @@ public class MainActivity extends Activity {
         LinearLayout favorites = (LinearLayout) findViewById(R.id.favorites);
 
         //set the current activity as selected
-        news.setSelected(true);
+        map.setSelected(true);
 
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                //startActivity(intent);
-                mDrawerLayout.closeDrawers();
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -116,8 +131,7 @@ public class MainActivity extends Activity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MapActivity.class);
-                startActivity(intent);
+                mDrawerLayout.closeDrawers();
             }
         });
 

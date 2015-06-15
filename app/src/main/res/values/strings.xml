@@ -5,6 +5,7 @@
     <string name="acts">PROGRAMMA</string>
     <string name="act">ACT</string>
     <string name="timetable">BLOKKENSCHEMA</string>
+    <string name="map">PLATTEGROND</string>
     <string name="favorites">FAVORIETEN</string>
 
     <string name="drawer_open">open menu</string>

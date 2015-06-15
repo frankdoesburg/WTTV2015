@@ -174,8 +174,9 @@ public class ArtistListActivity extends Activity {
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
-               }
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+            }
         });
 
         artists.setOnClickListener(new View.OnClickListener() {
@@ -191,6 +192,14 @@ public class ArtistListActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),TimetableActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),MapActivity.class);
                 startActivity(intent);
             }
         });
