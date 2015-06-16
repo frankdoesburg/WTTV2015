@@ -55,20 +55,10 @@ public class TimetableActivity extends Activity {
         //set timetable image
         TouchImageView imgView = (TouchImageView)findViewById(R.id.imageView);
         imgView.setImageResource(R.drawable.blokkenschema_northsea);
-        imgView.setScrollPosition(0, 0);
-
-       //TODO: scroll to top left of imageview
 
         initMenuDrawer();
 
 
-    }
-
-    @Override
-    public void onResume(){
-        TouchImageView imgView = (TouchImageView)findViewById(R.id.imageView);
-        imgView.setScrollPosition(0, 0);
-        super.onResume();
     }
 
     public void initMenuDrawer(){

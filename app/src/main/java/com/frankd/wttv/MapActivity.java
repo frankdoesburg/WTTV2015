@@ -55,13 +55,8 @@ public class MapActivity extends Activity {
         //set timetable image
         TouchImageView imgView = (TouchImageView)findViewById(R.id.imageView);
         imgView.setImageResource(R.drawable.wttv_plattegrond);
-        imgView.setScrollPosition(0, 0);
-
-        //TODO: scroll to top left of imageview
 
         initMenuDrawer();
-
-
     }
 
     public void initMenuDrawer(){

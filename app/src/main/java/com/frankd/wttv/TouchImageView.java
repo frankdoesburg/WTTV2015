@@ -29,6 +29,7 @@ import android.widget.Scroller;
 public class TouchImageView extends ImageView {
 
     private static final String DEBUG = "DEBUG";
+    private static final String TAG = "TouchImageView";
 
     //
     // SuperMin and SuperMax multipliers. Determine how much the image can be
@@ -89,19 +90,44 @@ public class TouchImageView extends ImageView {
     public TouchImageView(Context context) {
         super(context);
         sharedConstructing(context);
-        setScrollPosition(0,0);
     }
 
     public TouchImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         sharedConstructing(context);
-        setScrollPosition(0, 0);
     }
 
     public TouchImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         sharedConstructing(context);
-        setScrollPosition(0, 0);
+    }
+
+    public void scrollToTopLeft() {
+        try {
+            float x, y, viewWidth, viewHeight, viewCenterX, viewCenterY, imageWidth, imageHeight;
+
+            viewWidth = this.getWidth();
+            viewHeight = this.getHeight();
+
+            // get center of screen
+            viewCenterX = viewWidth / 2;
+            viewCenterY = viewHeight / 2;
+
+            // get image height and width
+            imageWidth = getImageWidth();
+            imageHeight = getImageHeight();
+
+            x = viewWidth / imageWidth * viewCenterX;
+            y = viewHeight / imageHeight * viewCenterY;
+
+            x = x / imageWidth;
+            y = y / imageHeight;
+
+            setScrollPosition(x, y);
+
+        } catch (Exception E) {
+            Log.v(TAG, E.toString());
+        }
     }
 
     private void sharedConstructing(Context context) {
@@ -429,7 +455,6 @@ public class TouchImageView extends ImageView {
      */
     public void setScrollPosition(float focusX, float focusY) {
         setZoom(normalizedScale, focusX, focusY);
-        Log.v("SCROLLPOS","setScrollPosition x " + focusX + " y " + focusY);
     }
 
     /**
@@ -529,6 +554,7 @@ public class TouchImageView extends ImageView {
         // Fit content within view
         //
         fitImageToView();
+        scrollToTopLeft();
     }
 
     /**

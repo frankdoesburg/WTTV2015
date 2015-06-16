@@ -7,32 +7,27 @@
     tools:context=".MainActivity">
 
     <!-- The main content view -->
-    <ScrollView
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-        <LinearLayout
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:src="@drawable/menu_background"
+            android:scaleType="centerCrop"/>
 
-            <com.frankd.wttv.CustomFontTextView
-                android:id="@+id/content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/black"
-                customAttrs:customFont="OSWALD_REGULAR" />
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-           <ListView
-               android:id="@+id/listView"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"/>
+    </FrameLayout>
 
-        </LinearLayout>
-
-
-    </ScrollView>
 
     <!-- this is the drawer layout -->
 
@@ -65,15 +60,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/menudrawer_selector"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:padding="10dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/newspaper"
-                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"/>
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/newspaper" />
 
                     <com.frankd.wttv.CustomFontTextView
                         android:id="@+id/newsTV"
@@ -91,15 +86,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/menudrawer_selector"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:padding="10dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/music"
-                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"/>
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/music" />
 
                     <com.frankd.wttv.CustomFontTextView
                         android:id="@+id/artistTV"
@@ -108,7 +103,7 @@
                         android:text="Acts"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColor"
-                        customAttrs:customFont="OSWALD_REGULAR"/>
+                        customAttrs:customFont="OSWALD_REGULAR" />
 
                 </LinearLayout>
 
@@ -117,15 +112,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/menudrawer_selector"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:padding="10dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/tasks"
-                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"/>
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/tasks" />
 
                     <com.frankd.wttv.CustomFontTextView
                         android:id="@+id/timetableTV"
@@ -134,8 +129,7 @@
                         android:text="Blokkenschema"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColor"
-                        customAttrs:customFont="OSWALD_REGULAR"
-                        />
+                        customAttrs:customFont="OSWALD_REGULAR" />
 
                 </LinearLayout>
 
@@ -144,15 +138,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/menudrawer_selector"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:padding="10dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/map_marker"
-                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"/>
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/map_marker" />
 
                     <com.frankd.wttv.CustomFontTextView
                         android:id="@+id/mapTV"
@@ -161,7 +155,7 @@
                         android:text="Plattegrond"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColor"
-                        customAttrs:customFont="OSWALD_REGULAR"/>
+                        customAttrs:customFont="OSWALD_REGULAR" />
 
                 </LinearLayout>
 
@@ -170,15 +164,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/menudrawer_selector"
-                    android:orientation="horizontal"
                     android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:padding="10dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/heart_open"
-                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"/>
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/heart_open" />
 
                     <com.frankd.wttv.CustomFontTextView
                         android:id="@+id/favoritesTV"
@@ -187,7 +181,7 @@
                         android:text="Favorieten"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/textColor"
-                        customAttrs:customFont="OSWALD_REGULAR"/>
+                        customAttrs:customFont="OSWALD_REGULAR" />
 
                 </LinearLayout>
             </LinearLayout>
