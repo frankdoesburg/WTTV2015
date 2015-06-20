@@ -1,5 +1,7 @@
 package com.frankd.wttv;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by FrankD on 5-6-2015.
  */
@@ -10,29 +12,21 @@ public class Artist {
     private String day;
     private String stage;
     private String time;
+    private String startTime;
+    private String endTime;
+    private String location;
     private String youtubeLink;
+    private boolean favorite;
+    private Bitmap thumbnailImage;
+    private Bitmap largeImage;
+    private byte[] thumbnailImageBlob;
+    private byte[] largeImageBlob;
+
     private int thumbnailImageId; //id of thumbnail square image
     private int largeImageID; //id of 3x2 size large image
 
     public Artist(){
         //do nothing
-    }
-
-    public Artist(int ID, String name, String description, String day, String stage, String time){
-        this.name = name;
-        this.description = description;
-        this.day = day;
-        this.stage = stage;
-        this.time = time;
-    }
-
-    public Artist(int ID,String name, String description, String day, String stage, String time, int squareImageId){
-        this.name = name;
-        this.description = description;
-        this.day = day;
-        this.stage = stage;
-        this.time = time;
-        this.thumbnailImageId = squareImageId;
     }
 
     public int getID() {
@@ -83,6 +77,37 @@ public class Artist {
         this.time = time;
     }
 
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 
     public int getThumbnailImageId() {
         return thumbnailImageId;
@@ -111,4 +136,21 @@ public class Artist {
     public String toString(){
         return "ID: " + ID + ", name: " + name;
     }
+
+    public Bitmap getThumbnailImage() {
+        return thumbnailImage;
+    }
+
+    public void setThumbnailImage(Bitmap thumbnailImage) {
+        this.thumbnailImage = thumbnailImage;
+    }
+
+    public Bitmap getLargeImage() {
+        return largeImage;
+    }
+
+    public void setLargeImage(Bitmap largeImage) {
+        this.largeImage = largeImage;
+    }
+
 }

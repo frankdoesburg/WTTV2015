@@ -4,6 +4,8 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.SQLException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -75,7 +78,7 @@ public class ArtistDetailActivity extends Activity {
             this.artist = getArtistsFromDB(ID);
 
             artistNameTV.setText(artist.getName());
-            timeDayTV.setText(artist.getDay() + " " + artist.getTime() + " @" + artist.getStage());
+            timeDayTV.setText(artist.getDay() + " " + artist.getStartTime() + " @" + artist.getLocation());
             descriptionTV.setText(artist.getDescription());
 
         }catch (Exception E){
@@ -83,8 +86,7 @@ public class ArtistDetailActivity extends Activity {
         }
 
         try{
-            setArtistImagesResourceID();
-            imageView.setImageResource(artist.getLargeImageID());
+             imageView.setImageBitmap(artist.getLargeImage());
         }catch(Exception E){
             Log.v(TAG, "could not load artist image");
         }
@@ -115,6 +117,7 @@ public class ArtistDetailActivity extends Activity {
 
 
     }
+
 
     public Artist getArtistsFromDB(int ID){
         DataBaseHelper myDbHelper = new DataBaseHelper(this);

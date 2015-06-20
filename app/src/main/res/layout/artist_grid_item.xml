@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Artiest naam"
+            android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
             customAttrs:customFont="OSWALD_REGULAR"
             android:textColor="@color/textColor"/>
@@ -37,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Vrijdag 18:00 -19:30"
+            android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall"
             customAttrs:customFont="OSWALD_REGULAR"
             android:textColor="@color/textColor"
