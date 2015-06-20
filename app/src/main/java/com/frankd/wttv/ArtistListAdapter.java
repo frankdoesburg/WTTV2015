@@ -47,7 +47,8 @@ public class ArtistListAdapter extends ArrayAdapter {
 
         //set imageview and scale the image making the width 50% of the screen size
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
-        imageView.setImageResource(curArtist.getThumbnailImageId());
+       // imageView.setImageResource(curArtist.getThumbnailImageId());
+        imageView.setImageBitmap(curArtist.getThumbnailImage());
         RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(width/2,width/2);
         imageView.setLayoutParams(parms);
 
@@ -55,7 +56,7 @@ public class ArtistListAdapter extends ArrayAdapter {
         CustomFontTextView timeDayTV = (CustomFontTextView) convertView.findViewById(R.id.timeDayTV);
 
         artistNameTV.setText(curArtist.getName());
-        timeDayTV.setText(curArtist.getDay() + " " + curArtist.getTime());
+        timeDayTV.setText(curArtist.getDay() + " " + curArtist.getStartTime());
 
         convertView.setId(curArtist.getID());
 

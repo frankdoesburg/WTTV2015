@@ -6,13 +6,18 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 /**
@@ -72,6 +77,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @return true if it exists, false if it doesn't
      */
     private boolean checkDataBase(){
+        //run this line when replacing database file
+       // myContext.deleteDatabase(DB_NAME);
 
         SQLiteDatabase checkDB = null;
 
@@ -149,15 +156,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 artist.setName(cursor.getString(1));
                 artist.setDescription(cursor.getString(2));
                 artist.setDay(cursor.getString(3));
-                artist.setTime(cursor.getString(4));
-                artist.setStage(cursor.getString(5));
-                artist.setYoutubeLink(cursor.getString(6));
+                artist.setStartTime(cursor.getString(4));
+                artist.setEndTime(cursor.getString(5));
+                artist.setLocation(cursor.getString(6));
+                artist.setYoutubeLink(cursor.getString(7));
+                artist.setFavorite(cursor.getInt(8) == 1);
+                //TODO getImage returns null
+                // error description: 06-20 16:21:06.990  11460-11460/com.frankd.wttv D/skia? --- SkImageDecoder::Factory returned null
+                byte[] byteIMG = cursor.getBlob(9);
+                artist.setThumbnailImage(getImageFromBlob(byteIMG));
+                byte[] byteIMG2 = cursor.getBlob(10);
+                artist.setLargeImage(getImageFromBlob(byteIMG2));
+
 
           } while (cursor.moveToNext());
         }
 
 
         return artist;
+    }
+
+    public static Bitmap getImageFromBlob(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
+
+
     }
 
     public ArrayList<Artist> getAllArtistsFromDB() {
@@ -168,6 +190,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
+
         Artist artist = null;
         if(cursor.moveToFirst()) {
             do {
@@ -176,9 +199,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 artist.setName(cursor.getString(1));
                 artist.setDescription(cursor.getString(2));
                 artist.setDay(cursor.getString(3));
-                artist.setTime(cursor.getString(4));
-                artist.setStage(cursor.getString(5));
-                artist.setYoutubeLink(cursor.getString(6));
+                artist.setStartTime(cursor.getString(4));
+                artist.setEndTime(cursor.getString(5));
+                artist.setLocation(cursor.getString(6));
+                artist.setYoutubeLink(cursor.getString(7));
+                artist.setFavorite(cursor.getInt(8)==1);
 
                 artists.add(artist);
             } while (cursor.moveToNext());
@@ -206,7 +231,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     // Add your public helper methods to access and get content from the database.
