@@ -142,14 +142,6 @@ public class FavoritesActivity extends Activity {
             }
         });
 
-        //set size for imageview with festival logo
-        //get screen width and size the imageview accordingly
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        float width = displaymetrics.widthPixels; //screen width
-        ImageView logoImageView = (ImageView) findViewById(R.id.logoImageView);
-        LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams((int)width/2,(int)width/2);
-        logoImageView.setLayoutParams(parms);
     }
 
     @Override

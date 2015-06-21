@@ -14,30 +14,31 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/logoImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
                 android:src="@drawable/logo_big" />
 
 
             <LinearLayout
                 android:id="@+id/news"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/menudrawer_selector"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginRight="@dimen/menu_drawer_between_image_text"
                     android:src="@drawable/newspaper" />
 
@@ -56,15 +57,15 @@
             <LinearLayout
                 android:id="@+id/artists"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/menudrawer_selector"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginRight="@dimen/menu_drawer_between_image_text"
                     android:src="@drawable/music" />
 
@@ -83,15 +84,15 @@
             <LinearLayout
                 android:id="@+id/timetable"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/menudrawer_selector"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginRight="@dimen/menu_drawer_between_image_text"
                     android:src="@drawable/tasks" />
 
@@ -110,15 +111,15 @@
             <LinearLayout
                 android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/menudrawer_selector"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginRight="@dimen/menu_drawer_between_image_text"
                     android:src="@drawable/map_marker" />
 
@@ -137,15 +138,15 @@
             <LinearLayout
                 android:id="@+id/favorites"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/menudrawer_selector"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginRight="@dimen/menu_drawer_between_image_text"
                     android:src="@drawable/heart_open" />
 
