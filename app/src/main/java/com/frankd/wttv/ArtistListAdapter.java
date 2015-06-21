@@ -3,6 +3,7 @@ package com.frankd.wttv;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -52,8 +54,8 @@ public class ArtistListAdapter extends ArrayAdapter {
         RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(width/2,width/2);
         imageView.setLayoutParams(parms);
 
-        CustomFontTextView artistNameTV = (CustomFontTextView) convertView.findViewById(R.id.artistNameTV);
-        CustomFontTextView timeDayTV = (CustomFontTextView) convertView.findViewById(R.id.timeDayTV);
+        TextView artistNameTV = (TextView) convertView.findViewById(R.id.artistNameTV);
+        TextView timeDayTV = (TextView) convertView.findViewById(R.id.timeDayTV);
 
         artistNameTV.setText(curArtist.getName());
         timeDayTV.setText(curArtist.getDay() + " " + curArtist.getStartTime());

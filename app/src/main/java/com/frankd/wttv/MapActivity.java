@@ -2,6 +2,7 @@ package com.frankd.wttv;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by FrankD on 5-6-2015.
@@ -146,6 +149,10 @@ public class MapActivity extends Activity {
         ImageView logoImageView = (ImageView) findViewById(R.id.logoImageView);
         LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams((int)width/2,(int)width/2);
         logoImageView.setLayoutParams(parms);
+    }
+
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override

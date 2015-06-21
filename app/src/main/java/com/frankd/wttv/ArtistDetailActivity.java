@@ -2,6 +2,7 @@ package com.frankd.wttv;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.graphics.Bitmap;
@@ -19,10 +20,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by FrankD on 5-6-2015.
@@ -49,9 +53,9 @@ public class ArtistDetailActivity extends Activity {
         actionBar.setTitle(s);
 
         //get textview
-        CustomFontTextView artistNameTV = (CustomFontTextView) findViewById(R.id.artistNameTV);
-        CustomFontTextView descriptionTV = (CustomFontTextView) findViewById(R.id.descriptionTV);
-        CustomFontTextView timeDayTV = (CustomFontTextView) findViewById(R.id.timeDayTV);
+        TextView artistNameTV = (TextView) findViewById(R.id.artistNameTV);
+        TextView descriptionTV = (TextView) findViewById(R.id.descriptionTV);
+        TextView timeDayTV = (TextView) findViewById(R.id.timeDayTV);
 
 
         //get screen width and size the imageview accordingly
@@ -116,6 +120,10 @@ public class ArtistDetailActivity extends Activity {
         topPanel.startAnimation(titleAnimation);
 
 
+    }
+
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
 

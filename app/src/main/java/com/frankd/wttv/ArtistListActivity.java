@@ -2,6 +2,7 @@ package com.frankd.wttv;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
@@ -22,6 +23,8 @@ import android.widget.ListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by FrankD on 5-6-2015.
@@ -69,6 +72,10 @@ public class ArtistListActivity extends Activity {
 
         initMenuDrawer();
 
+    }
+
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     //finds images in drawable folder and gets their resource ID in the artist object

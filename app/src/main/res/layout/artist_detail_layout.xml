@@ -39,23 +39,21 @@
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     >
 
-                <com.frankd.wttv.CustomFontTextView
+                <TextView
                     android:id="@+id/artistNameTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="artist name"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/white"
-                    customAttrs:customFont="OSWALD_REGULAR"
                     />
 
-                <com.frankd.wttv.CustomFontTextView
+                <TextView
                     android:id="@+id/timeDayTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vrijdag 18:00 -19:30"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    customAttrs:customFont="OSWALD_REGULAR"
                     android:textColor="@color/white"
                     android:layout_below="@+id/artistNameTV"/>
                 </RelativeLayout>
@@ -83,7 +81,7 @@
 
 
 
-            <com.frankd.wttv.CustomFontTextView
+            <TextView
                 android:id="@+id/descriptionTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,7 +91,7 @@
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:text="text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                customAttrs:customFont="OSWALD_REGULAR"/>
+                />
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>
