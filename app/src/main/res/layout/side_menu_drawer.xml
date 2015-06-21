@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:id="@+id/left_drawer"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
@@ -44,6 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nieuws"
+                    fontPath="fonts/Oswald-Light.ttf"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColor"
                     />
@@ -70,6 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Acts"
+                    fontPath="fonts/Oswald-Light.ttf"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColor"
                     />
@@ -96,6 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Blokkenschema"
+                    fontPath="fonts/Oswald-Light.ttf"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColor"
                     />
@@ -122,6 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Plattegrond"
+                    fontPath="fonts/Oswald-Light.ttf"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColor"
                     />
@@ -148,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Favorieten"
+                    fontPath="fonts/Oswald-Light.ttf"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/textColor"
                     />
