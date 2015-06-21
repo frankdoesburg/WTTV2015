@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -163,10 +164,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 artist.setFavorite(cursor.getInt(8) == 1);
                 //TODO getImage returns null
                 // error description: 06-20 16:21:06.990  11460-11460/com.frankd.wttv D/skia? --- SkImageDecoder::Factory returned null
-                byte[] byteIMG = cursor.getBlob(9);
-                artist.setThumbnailImage(getImageFromBlob(byteIMG));
-                byte[] byteIMG2 = cursor.getBlob(10);
-                artist.setLargeImage(getImageFromBlob(byteIMG2));
+                byte[] blob = cursor.getBlob(9);
+                artist.setThumbnailImage(getImageFromBase64Blob(blob));
+                byte[] blob2 = cursor.getBlob(10);
+                artist.setLargeImage(getImageFromBase64Blob(blob2));
 
 
           } while (cursor.moveToNext());
@@ -174,6 +175,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
         return artist;
+    }
+
+    public Bitmap getImageFromBase64Blob(byte[] blob){
+        byte[] decodedString = Base64.decode(blob, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 
     public static Bitmap getImageFromBlob(byte[] image) {
@@ -204,6 +211,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 artist.setLocation(cursor.getString(6));
                 artist.setYoutubeLink(cursor.getString(7));
                 artist.setFavorite(cursor.getInt(8)==1);
+
+                byte[] blob = cursor.getBlob(9);
+                artist.setThumbnailImage(getImageFromBase64Blob(blob));
+                byte[] blob2 = cursor.getBlob(10);
+                artist.setLargeImage(getImageFromBase64Blob(blob2));
 
                 artists.add(artist);
             } while (cursor.moveToNext());
