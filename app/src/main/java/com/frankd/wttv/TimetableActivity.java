@@ -5,25 +5,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Spannable;
 import android.text.SpannableString;
 
-import android.support.v4.view.GestureDetectorCompat;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
+
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.ImageViewState;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
@@ -59,8 +54,9 @@ public class TimetableActivity extends Activity {
         actionBar.setTitle(s);
 
         //set timetable image
-        TouchImageView imgView = (TouchImageView)findViewById(R.id.imageView);
-        imgView.setImageResource(R.drawable.blokkenschema_zat);
+        SubsamplingScaleImageView imgView = (SubsamplingScaleImageView)findViewById(R.id.imageView);
+        imgView.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
+        imgView.setImage(ImageSource.resource(R.drawable.blokkenschema_vrij), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
 
         initMenuDrawer();
 
