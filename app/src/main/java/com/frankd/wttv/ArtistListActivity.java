@@ -6,24 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -45,7 +38,6 @@ public class ArtistListActivity extends Activity {
 
         //allow backward navigation to parent activity via actionbar
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
         //set custom font to action bar
         SpannableString s = new SpannableString(getString(R.string.acts));
         s.setSpan(new TypefaceSpan(this, "big_noodle_titling.ttf"), 0, s.length(),
@@ -57,14 +49,6 @@ public class ArtistListActivity extends Activity {
 
         //get artist list from database
         artistList = getArtistsFromDB();
-        /*
-        for(Artist artist: artistList){
-            Log.v(TAG, "loaded artist from DB: " + artist.getID() + " name: " + artist.getName());
-        }
-        */
-
-        //set images for each artist
-        setArtistImagesResourceID();
 
         GridView artistGrid = (GridView) findViewById(R.id.gridView);
         ArtistListAdapter adapter = new ArtistListAdapter(this,artistList);
@@ -78,41 +62,8 @@ public class ArtistListActivity extends Activity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    //finds images in drawable folder and gets their resource ID in the artist object
-    public void setArtistImagesResourceID(){
-        for(Artist artist:artistList){
-            int ID = artist.getID();
-
-            try{
-                String uri = "act" + ID; //creates filename dynamically, e.g. act3 or act4 (skip the .jpg or .png suffix)
-                int imageID = getResources().getIdentifier(uri,"drawable", getPackageName());
-
-               // Log.v(TAG,"created image ID : " + imageID + " for " + uri);
-                artist.setThumbnailImageId(imageID);
-
-            }catch(NullPointerException E){
-                Log.v(TAG,"could not load image with ID " + ID + " and acts name " + artist.getName());
-            }
-
-            try{
-                String uri = "act" + ID + "_large"; //creates filename dynamically, e.g. act3 or act4 (skip the .jpg or .png suffix)
-                int imageID = getResources().getIdentifier(uri,"drawable", getPackageName());
-
-                // Log.v(TAG,"created image ID : " + imageID + " for " + uri);
-                artist.setLargeImageID(imageID);
-
-            }catch(NullPointerException E){
-                Log.v(TAG,"could not load image with ID " + ID + " and acts name " + artist.getName());
-            }
-
-        }
-
-
-    }
-
     public ArrayList<Artist> getArtistsFromDB(){
         DataBaseHelper myDbHelper = new DataBaseHelper(this);
-        myDbHelper = new DataBaseHelper(this);
 
         try {
 

@@ -9,10 +9,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -90,7 +93,7 @@ public class ArtistDetailActivity extends Activity {
         }
 
         try{
-             imageView.setImageBitmap(artist.getLargeImage());
+            imageView.setImageBitmap(getImageFromBase64Blob(artist.getLargeImageBlob()));
         }catch(Exception E){
             Log.v(TAG, "could not load artist image");
         }
@@ -155,32 +158,22 @@ public class ArtistDetailActivity extends Activity {
         return myDbHelper.getArtistFromDB(ID);
     }
 
-    //finds images in drawable folder and gets their resource ID in the artist object
-    public void setArtistImagesResourceID(){
-            int ID = artist.getID();
-
-            try{
-                String uri = "act" + ID; //creates filename dynamically, e.g. act3 or act4 (skip the .jpg or .png suffix)
-                int imageID = getResources().getIdentifier(uri,"drawable", getPackageName());
-
-                // Log.v(TAG,"created image ID : " + imageID + " for " + uri);
-                artist.setThumbnailImageId(imageID);
-
-            }catch(NullPointerException E){
-                Log.v(TAG,"could not load image with ID " + ID + " and acts name " + artist.getName());
-            }
-
-            try{
-                String uri = "act" + ID + "_large"; //creates filename dynamically, e.g. act3 or act4 (skip the .jpg or .png suffix)
-                int imageID = getResources().getIdentifier(uri,"drawable", getPackageName());
-
-                // Log.v(TAG,"created image ID : " + imageID + " for " + uri);
-                artist.setLargeImageID(imageID);
-
-            }catch(NullPointerException E){
-                Log.v(TAG,"could not load image with ID " + ID + " and acts name " + artist.getName());
-            }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
+
+    public Bitmap getImageFromBase64Blob(byte[] blob) {
+        byte[] decodedString = Base64.decode(blob, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
+    }
+
 
 }

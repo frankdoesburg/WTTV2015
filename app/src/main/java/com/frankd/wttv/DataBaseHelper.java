@@ -1,5 +1,6 @@
 package com.frankd.wttv;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -11,14 +12,14 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -153,26 +154,44 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                 artist = new Artist();
-                artist.setID(Integer.parseInt(cursor.getString(0)));
+                artist.setId(Integer.parseInt(cursor.getString(0)));
                 artist.setName(cursor.getString(1));
                 artist.setDescription(cursor.getString(2));
                 artist.setDay(cursor.getString(3));
-                artist.setStartTime(cursor.getString(4));
-                artist.setEndTime(cursor.getString(5));
-                artist.setLocation(cursor.getString(6));
+                String startTimeString = cursor.getString(4);
+                String endTimeString = cursor.getString(5);
+                DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                try {
+                    artist.setStartTime(iso8601Format.parse(startTimeString));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ISO8601 starttime failed", e);
+
+                }
+                try {
+                    artist.setEndTime(iso8601Format.parse(endTimeString));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ISO8601 endtime failed", e);
+
+                }
+
+                    artist.setLocation(cursor.getString(6));
                 artist.setYoutubeLink(cursor.getString(7));
                 artist.setFavorite(cursor.getInt(8) == 1);
-                //TODO getImage returns null
-                // error description: 06-20 16:21:06.990  11460-11460/com.frankd.wttv D/skia? --- SkImageDecoder::Factory returned null
                 byte[] blob = cursor.getBlob(9);
-                artist.setThumbnailImage(getImageFromBase64Blob(blob));
+                artist.setThumbnailImageBlob(blob);
                 byte[] blob2 = cursor.getBlob(10);
-                artist.setLargeImage(getImageFromBase64Blob(blob2));
+                artist.setLargeImageBlob(blob2);
+                String updateAtString = cursor.getString(11);
+
+                try {
+                    artist.setUpdatedAt(iso8601Format.parse(updateAtString));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ISO8601 updatedAt failed", e);
+                }
 
 
           } while (cursor.moveToNext());
         }
-
 
         return artist;
     }
@@ -183,10 +202,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return decodedByte;
     }
 
-    public static Bitmap getImageFromBlob(byte[] image) {
-        return BitmapFactory.decodeByteArray(image, 0, image.length);
+    public void insertArtist(Artist artist) {
+        ContentValues values = new ContentValues();
 
+        DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
+        values.put("id", artist.getId());
+        values.put("name", artist.getName());
+        values.put("description", artist.getDescription());
+        values.put("location", artist.getLocation());
+        values.put("startTime", iso8601Format.format(artist.getStartTime()));
+        values.put("endTime", iso8601Format.format(artist.getEndTime()));
+        values.put("day", artist.getDay());
+        values.put("youtube", artist.getYoutubeLink());
+        values.put("favorite", artist.isFavorite());
+        values.put("image", artist.getThumbnailImageBlob());
+        values.put("largeImage", artist.getLargeImageBlob());
+        values.put("updatedAt", iso8601Format.format(artist.getUpdatedAt()));
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.insertWithOnConflict("acts", "null", values, db.CONFLICT_REPLACE);
     }
 
     public ArrayList<Artist> getAllArtistsFromDB() {
@@ -202,20 +238,39 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                 artist = new Artist();
-                artist.setID(Integer.parseInt(cursor.getString(0)));
+                artist.setId(Integer.parseInt(cursor.getString(0)));
                 artist.setName(cursor.getString(1));
                 artist.setDescription(cursor.getString(2));
                 artist.setDay(cursor.getString(3));
-                artist.setStartTime(cursor.getString(4));
-                artist.setEndTime(cursor.getString(5));
+                String startTimeString = cursor.getString(4);
+                String endTimeString = cursor.getString(5);
+                DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                try {
+                    artist.setStartTime(iso8601Format.parse(startTimeString));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ISO8601 starttime failed", e);
+                }
+                try {
+                    artist.setEndTime(iso8601Format.parse(endTimeString));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ISO8601 endtime failed", e);
+                }
                 artist.setLocation(cursor.getString(6));
                 artist.setYoutubeLink(cursor.getString(7));
                 artist.setFavorite(cursor.getInt(8)==1);
 
+
                 byte[] blob = cursor.getBlob(9);
-                artist.setThumbnailImage(getImageFromBase64Blob(blob));
+                artist.setThumbnailImageBlob(blob);
                 byte[] blob2 = cursor.getBlob(10);
-                artist.setLargeImage(getImageFromBase64Blob(blob2));
+                artist.setLargeImageBlob(blob2);
+                String updateAtString = cursor.getString(11);
+
+                try {
+                    artist.setUpdatedAt(iso8601Format.parse(updateAtString));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ISO8601 updatedAt failed", e);
+                }
 
                 artists.add(artist);
             } while (cursor.moveToNext());

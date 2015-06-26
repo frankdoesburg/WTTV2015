@@ -1,19 +1,15 @@
 package com.frankd.wttv;
 
 import android.graphics.Bitmap;
+import java.util.Date;
 
-/**
- * Created by FrankD on 5-6-2015.
- */
 public class Artist {
-    private int ID;
+    private int id;
     private String name;
     private String description;
     private String day;
-    private String stage;
-    private String time;
-    private String startTime;
-    private String endTime;
+    private Date startTime;
+    private Date endTime;
     private String location;
     private String youtubeLink;
     private boolean favorite;
@@ -21,20 +17,14 @@ public class Artist {
     private Bitmap largeImage;
     private byte[] thumbnailImageBlob;
     private byte[] largeImageBlob;
+    private Date updatedAt;
 
-    private int thumbnailImageId; //id of thumbnail square image
-    private int largeImageID; //id of 3x2 size large image
-
-    public Artist(){
-        //do nothing
+    public int getId() {
+        return id;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -61,36 +51,44 @@ public class Artist {
         this.day = day;
     }
 
-    public String getStage() {
-        return stage;
-    }
-
-    public void setStage(String stage) {
-        this.stage = stage;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public byte[] getThumbnailImageBlob() {
+        return thumbnailImageBlob;
+    }
+
+    public void setThumbnailImageBlob(byte[] thumbnailImageBlob) {
+        this.thumbnailImageBlob = thumbnailImageBlob;
+    }
+
+    public byte[] getLargeImageBlob() {
+        return largeImageBlob;
+    }
+
+    public void setLargeImageBlob(byte[] largeImageBlob) {
+        this.largeImageBlob = largeImageBlob;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getLocation() {
@@ -109,22 +107,6 @@ public class Artist {
         this.favorite = favorite;
     }
 
-    public int getThumbnailImageId() {
-        return thumbnailImageId;
-    }
-
-    public void setThumbnailImageId(int thumbnailImageId) {
-        this.thumbnailImageId = thumbnailImageId;
-    }
-
-    public int getLargeImageID() {
-        return largeImageID;
-    }
-
-    public void setLargeImageID(int largeImageID) {
-        this.largeImageID = largeImageID;
-    }
-
     public String getYoutubeLink() {
         return youtubeLink;
     }
@@ -134,7 +116,7 @@ public class Artist {
     }
 
     public String toString(){
-        return "ID: " + ID + ", name: " + name;
+        return "id: " + id + ", name: " + name;
     }
 
     public Bitmap getThumbnailImage() {

@@ -3,7 +3,9 @@ package com.frankd.wttv;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 
 import java.util.ArrayList;
 
@@ -36,7 +39,6 @@ public class ArtistListAdapter extends ArrayAdapter {
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
-            //convertView = mInflater.inflate(R.layout.artist_list_item, parent, false);
             convertView = mInflater.inflate(R.layout.artist_grid_item, parent, false);
         }
         //get artist info
@@ -50,7 +52,8 @@ public class ArtistListAdapter extends ArrayAdapter {
         //set imageview and scale the image making the width 50% of the screen size
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
        // imageView.setImageResource(curArtist.getThumbnailImageId());
-        imageView.setImageBitmap(curArtist.getThumbnailImage());
+
+        imageView.setImageBitmap(getImageFromBase64Blob(curArtist.getThumbnailImageBlob()));
         RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(width/2,width/2);
         imageView.setLayoutParams(parms);
 
@@ -60,7 +63,7 @@ public class ArtistListAdapter extends ArrayAdapter {
         artistNameTV.setText(curArtist.getName());
         timeDayTV.setText(curArtist.getDay() + " " + curArtist.getStartTime());
 
-        convertView.setId(curArtist.getID());
+        convertView.setId(curArtist.getId());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,5 +77,11 @@ public class ArtistListAdapter extends ArrayAdapter {
 
 
         return convertView;
+    }
+
+    public Bitmap getImageFromBase64Blob(byte[] blob){
+        byte[] decodedString = Base64.decode(blob, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
     }
 }

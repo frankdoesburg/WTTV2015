@@ -2,20 +2,36 @@ package com.frankd.wttv;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.SQLException;
+import android.net.http.AndroidHttpClient;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -30,6 +46,7 @@ public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     //action bar toggle
     private ActionBarDrawerToggle mDrawerToggle;
+    private RequestQueue mQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +67,38 @@ public class MainActivity extends Activity {
         //initialize news feed and listview
         ListView listView = (ListView) findViewById(R.id.listView);
         //TODO: set listview adapter
-        //TODO: get news from feed if user has acces to internet
+        //TODO: get news from feed if user has access to internet
+
+
+        DataBaseHelper myDbHelper = new DataBaseHelper(this);
+
+        try {
+
+            myDbHelper.createDataBase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
+
+        }
+
+        try {
+
+            myDbHelper.openDataBase();
+
+        }catch(SQLException sqle){
+
+            throw sqle;
+
+        }
+
+        myDbHelper.close();
+
+        DataFetcher dataFetcher = new DataFetcher();
+        dataFetcher.getDataFromServer(this, myDbHelper);
 
         initMenuDrawer();
+
 
     }
 
@@ -61,7 +107,7 @@ public class MainActivity extends Activity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    public void initMenuDrawer(){
+    public void initMenuDrawer() {
         //navigation drawer setup
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //action bar toggle
@@ -113,7 +159,7 @@ public class MainActivity extends Activity {
         artists.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),ArtistListActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ArtistListActivity.class);
                 startActivity(intent);
             }
         });
@@ -121,7 +167,7 @@ public class MainActivity extends Activity {
         timetable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),TimetableActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TimetableActivity.class);
                 startActivity(intent);
             }
         });
@@ -129,7 +175,7 @@ public class MainActivity extends Activity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MapActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
                 startActivity(intent);
             }
         });
@@ -137,7 +183,7 @@ public class MainActivity extends Activity {
         favorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),FavoritesActivity.class);
+                Intent intent = new Intent(getApplicationContext(), FavoritesActivity.class);
                 startActivity(intent);
             }
         });
