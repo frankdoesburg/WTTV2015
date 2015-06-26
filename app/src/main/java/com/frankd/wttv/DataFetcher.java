@@ -107,7 +107,7 @@ public class DataFetcher {
                                         }
 
                                         artist.setDescription(removeHtmlFromString(attributes.optString("body")));
-                                        
+
                                         System.out.println("Parsed: " + artist.getName());
                                         myDbHelper.insertArtist(artist);
                                     }
