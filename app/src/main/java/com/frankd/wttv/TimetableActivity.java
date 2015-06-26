@@ -60,7 +60,7 @@ public class TimetableActivity extends Activity {
 
         //set timetable image
         TouchImageView imgView = (TouchImageView)findViewById(R.id.imageView);
-        imgView.setImageResource(R.drawable.blokkenschema_northsea);
+        imgView.setImageResource(R.drawable.blokkenschema_zat);
 
         initMenuDrawer();
 
