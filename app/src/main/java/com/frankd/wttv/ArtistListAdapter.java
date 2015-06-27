@@ -17,20 +17,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by FrankD on 5-6-2015.
- */
+
 public class ArtistListAdapter extends ArrayAdapter {
 
     private Context context;
     private ArrayList<Artist> artists;
+    private ArrayList<Artist> filteredData;
+    private ItemFilter mFilter = new ItemFilter();
 
     public ArtistListAdapter(Context context, ArrayList<Artist> artists){
         super(context,R.layout.artist_grid_item,artists);
         this.context = context;
         this.artists = artists;
+        filteredData = artists;
     }
 
 
@@ -43,7 +46,7 @@ public class ArtistListAdapter extends ArrayAdapter {
             convertView = mInflater.inflate(R.layout.artist_grid_item, parent, false);
         }
         //get artist info
-        Artist curArtist = artists.get(position);
+        Artist curArtist = filteredData.get(position);
 
         //get screen width
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -52,7 +55,6 @@ public class ArtistListAdapter extends ArrayAdapter {
 
         //set imageview and scale the image making the width 50% of the screen size
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
-       // imageView.setImageResource(curArtist.getThumbnailImageId());
 
         imageView.setImageBitmap(getImageFromBase64Blob(curArtist.getThumbnailImageBlob()));
         RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(width/2,width/2);
@@ -62,7 +64,8 @@ public class ArtistListAdapter extends ArrayAdapter {
         TextView timeDayTV = (TextView) convertView.findViewById(R.id.timeDayTV);
 
         artistNameTV.setText(curArtist.getName());
-        timeDayTV.setText(curArtist.getDay() + " " + curArtist.getStartTime());
+        SimpleDateFormat time = new SimpleDateFormat("hh:mm");
+        timeDayTV.setText(curArtist.getDay() + " " + time.format(curArtist.getStartTime()) + " @" + curArtist.getLocation());
 
         convertView.setId(curArtist.getId());
 
@@ -76,46 +79,78 @@ public class ArtistListAdapter extends ArrayAdapter {
             }
         });
 
-
         return convertView;
     }
 
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-
-            /* (non-Javadoc)
-             * @see android.widget.Filter#performFiltering(java.lang.CharSequence)
-             */
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                // TODO Auto-generated method stub
-            /*
-             * Here, you take the constraint and let it run against the array
-             * You return the result in the object of FilterResults in a form
-             * you can read later in publichResults.
-             */
-                return null;
-            }
-
-            /* (non-Javadoc)
-             * @see android.widget.Filter#publishResults(java.lang.CharSequence, android.widget.Filter.FilterResults)
-             */
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                // TODO Auto-generated method stub
-            /*
-             * Here, you take the result, put it into Adapters array
-             * and inform about the the change in data.
-             */
-            }
-
-        };
-    }
 
     public Bitmap getImageFromBase64Blob(byte[] blob){
         byte[] decodedString = Base64.decode(blob, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return decodedByte;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+    @Override
+    public int getCount() {
+        return filteredData.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return filteredData.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    private class ItemFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            String filterString = constraint.toString().toLowerCase();
+
+            FilterResults results = new FilterResults();
+
+            final List<Artist> list = artists;
+
+            if(filterString == "") {
+
+                results.values = list;
+                results.count = list.size();
+                return results;
+            }
+
+            int count = list.size();
+            final ArrayList<Artist> nlist = new ArrayList<>();
+
+            String filterableString ;
+
+            for (int i = 0; i < count; i++) {
+                filterableString = list.get(i).getDay();
+                if (filterableString.toLowerCase().contains(filterString)) {
+                    nlist.add(list.get(i));
+                }
+            }
+
+            results.values = nlist;
+            results.count = nlist.size();
+
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredData = (ArrayList<Artist>) results.values;
+            notifyDataSetChanged();
+        }
+
+
     }
 }

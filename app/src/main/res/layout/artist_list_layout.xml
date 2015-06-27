@@ -1,30 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:customAttrs="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/grid_refresh_layout"
+
+    <LinearLayout
+        android:id="@+id/grid_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/segmented_control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            segmentedgroup:border_width="1dp"
+            segmentedgroup:corner_radius="5dp"
+            android:layout_margin="10dp">
 
-        <GridView
-            android:id="@+id/gridView"
+            <RadioButton
+                android:id="@+id/segment_btn_all"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Alle"
+                android:checked="true"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:onClick="onRadioButtonClicked"/>
+
+            <RadioButton
+                android:id="@+id/segment_btn_vrij"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Vrij"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:onClick="onRadioButtonClicked"/>
+
+            <RadioButton
+                android:id="@+id/segment_btn_zat"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Zat"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:onClick="onRadioButtonClicked"/>
+
+            <RadioButton
+                android:id="@+id/segment_btn_zon"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Zon"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:onClick="onRadioButtonClicked"/>
+
+        </info.hoang8f.android.segmented.SegmentedGroup>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/grid_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:horizontalSpacing="2dp"
-            android:numColumns="2"
-            android:verticalSpacing="2dp" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:orientation="vertical">
+
+            <GridView
+                android:id="@+id/gridView"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:horizontalSpacing="2dp"
+                android:numColumns="2"
+                android:verticalSpacing="2dp" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
 
 
     <!-- this is the drawer layout -->
 
-    <include layout="@layout/side_menu_drawer"/>
+    <include layout="@layout/side_menu_drawer" />
 
 
 </android.support.v4.widget.DrawerLayout>

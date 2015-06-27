@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.SQLException;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,8 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+
 import java.io.IOException;
 import java.util.ArrayList;
+
+import info.hoang8f.android.segmented.SegmentedGroup;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -32,6 +37,8 @@ public class ArtistListActivity extends Activity {
     //action bar toggle
     private ActionBarDrawerToggle mDrawerToggle;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ArtistListAdapter adapter;
+    private GridView artistGrid;
 
     @Override
        protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +66,11 @@ public class ArtistListActivity extends Activity {
                 refreshArtists();
             }
         });
-        GridView artistGrid = (GridView) findViewById(R.id.gridView);
-        ArtistListAdapter adapter = new ArtistListAdapter(this,artistList);
+        SegmentedGroup segmentedGroup = (SegmentedGroup) findViewById(R.id.segmented_control);
+        segmentedGroup.setTintColor(Color.parseColor("#333333"), Color.parseColor("#ffffff"));
+
+        artistGrid = (GridView) findViewById(R.id.gridView);
+        adapter = new ArtistListAdapter(this, artistList);
         artistGrid.setAdapter(adapter);
 
         initMenuDrawer();
@@ -126,6 +136,40 @@ public class ArtistListActivity extends Activity {
         dataFetcher.getDataFromServer(this, myDbHelper);
         swipeRefreshLayout.setRefreshing(false);
 
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch (view.getId()) {
+            case R.id.segment_btn_all:
+                if (checked) {
+                    adapter.getFilter().filter("");
+                    artistGrid.setSelection(0);
+                }
+                    break;
+            case R.id.segment_btn_vrij:
+                if (checked) {
+                    adapter.getFilter().filter("vrijdag");
+                    artistGrid.setSelection(0);
+                }
+                break;
+            case R.id.segment_btn_zat:
+                if (checked) {
+                    adapter.getFilter().filter("zaterdag");
+                    artistGrid.setSelection(0);
+                }
+                break;
+            case R.id.segment_btn_zon:
+                if (checked) {
+                    adapter.getFilter().filter("zondag");
+                    artistGrid.setSelection(0);
+                }
+
+                break;
+        }
     }
 
     public void initMenuDrawer(){
