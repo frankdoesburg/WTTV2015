@@ -2,7 +2,6 @@ package com.frankd.wttv;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
@@ -107,10 +106,6 @@ public class DataFetcher {
                                         }
 
                                         artist.setDescription(removeHtmlFromString(attributes.optString("body")));
-
-//                                        var urlString = appDict["attributes"]["image"]["thumbnail"].stringValue
-//                                        act.imageBlob = self.getBlobFromUrl(urlString, resolution:"240x240")
-//                                        act.largeImageBlob = self.getBlobFromUrl(urlString, resolution: "600x400")
 
                                         try {
                                             String imageUrl = attributes.optJSONObject("image").optString("thumbnail");

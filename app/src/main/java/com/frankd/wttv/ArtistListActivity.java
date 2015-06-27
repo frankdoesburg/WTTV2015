@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -30,6 +31,7 @@ public class ArtistListActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     //action bar toggle
     private ActionBarDrawerToggle mDrawerToggle;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
        protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,13 @@ public class ArtistListActivity extends Activity {
         //get artist list from database
         artistList = getArtistsFromDB();
 
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.grid_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshArtists();
+            }
+        });
         GridView artistGrid = (GridView) findViewById(R.id.gridView);
         ArtistListAdapter adapter = new ArtistListAdapter(this,artistList);
         artistGrid.setAdapter(adapter);
@@ -87,6 +96,36 @@ public class ArtistListActivity extends Activity {
 
         myDbHelper.close();
         return myDbHelper.getAllArtistsFromDB();
+    }
+
+    public void refreshArtists() {
+        DataBaseHelper myDbHelper = new DataBaseHelper(this);
+
+        try {
+
+            myDbHelper.createDataBase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
+
+        }
+
+        try {
+
+            myDbHelper.openDataBase();
+
+        }catch(SQLException sqle){
+
+            throw sqle;
+
+        }
+
+        myDbHelper.close();
+        DataFetcher dataFetcher = new DataFetcher();
+        dataFetcher.getDataFromServer(this, myDbHelper);
+        swipeRefreshLayout.setRefreshing(false);
+
     }
 
     public void initMenuDrawer(){
