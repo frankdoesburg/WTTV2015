@@ -7,10 +7,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/imageViewParent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/segmented_control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            segmentedgroup:border_width="1dp"
+            segmentedgroup:corner_radius="5dp"
+            android:layout_margin="10dp">
+
+            <RadioButton
+                android:id="@+id/segment_btn_vrij"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Vrij"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:onClick="onRadioButtonClicked"
+                android:checked="true"
+                />
+
+            <RadioButton
+                android:id="@+id/segment_btn_zat"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Zat"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:onClick="onRadioButtonClicked"/>
+
+            <RadioButton
+                android:id="@+id/segment_btn_zon"
+                style="@style/RadioButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Zon"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:onClick="onRadioButtonClicked"/>/>
+
+        </info.hoang8f.android.segmented.SegmentedGroup>
+
 
         <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
             android:id="@+id/imageView"
@@ -18,7 +64,7 @@
             android:layout_height="match_parent"
             />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <!-- this is the drawer layout -->
 

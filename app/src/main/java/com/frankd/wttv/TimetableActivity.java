@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -15,11 +16,13 @@ import android.text.SpannableString;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
+import info.hoang8f.android.segmented.SegmentedGroup;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
@@ -34,6 +37,7 @@ public class TimetableActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     //action bar toggle
     private ActionBarDrawerToggle mDrawerToggle;
+    private SubsamplingScaleImageView imgView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +58,44 @@ public class TimetableActivity extends Activity {
         actionBar.setTitle(s);
 
         //set timetable image
-        SubsamplingScaleImageView imgView = (SubsamplingScaleImageView)findViewById(R.id.imageView);
+        imgView = (SubsamplingScaleImageView)findViewById(R.id.imageView);
         imgView.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
         imgView.setImage(ImageSource.resource(R.drawable.blokkenschema_vrij), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
+
+        SegmentedGroup segmentedGroup = (SegmentedGroup) findViewById(R.id.segmented_control);
+        segmentedGroup.setTintColor(Color.parseColor("#333333"), Color.parseColor("#ffffff"));
 
         initMenuDrawer();
 
 
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch (view.getId()) {
+            case R.id.segment_btn_vrij:
+                if (checked) {
+                    imgView.setImage(ImageSource.resource(R.drawable.blokkenschema_vrij), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
+
+                }
+                break;
+            case R.id.segment_btn_zat:
+                if (checked) {
+                    imgView.setImage(ImageSource.resource(R.drawable.blokkenschema_zat), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
+
+                }
+                break;
+            case R.id.segment_btn_zon:
+                if (checked) {
+                    imgView.setImage(ImageSource.resource(R.drawable.blokkenschema_zon), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
+
+                }
+
+                break;
+        }
     }
 
     protected void attachBaseContext(Context newBase) {
