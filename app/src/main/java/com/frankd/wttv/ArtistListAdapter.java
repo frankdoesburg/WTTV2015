@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -77,6 +78,39 @@ public class ArtistListAdapter extends ArrayAdapter {
 
 
         return convertView;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+
+            /* (non-Javadoc)
+             * @see android.widget.Filter#performFiltering(java.lang.CharSequence)
+             */
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                // TODO Auto-generated method stub
+            /*
+             * Here, you take the constraint and let it run against the array
+             * You return the result in the object of FilterResults in a form
+             * you can read later in publichResults.
+             */
+                return null;
+            }
+
+            /* (non-Javadoc)
+             * @see android.widget.Filter#publishResults(java.lang.CharSequence, android.widget.Filter.FilterResults)
+             */
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                // TODO Auto-generated method stub
+            /*
+             * Here, you take the result, put it into Adapters array
+             * and inform about the the change in data.
+             */
+            }
+
+        };
     }
 
     public Bitmap getImageFromBase64Blob(byte[] blob){
