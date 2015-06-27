@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -226,9 +227,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Artist> getAllArtistsFromDB() {
-        ArrayList<Artist> artists = new ArrayList<Artist>();
+        ArrayList<Artist> artists = new ArrayList<>();
 
-        String query = "SELECT * FROM " + "acts";
+        String query = "SELECT * FROM acts ORDER BY name";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -247,12 +248,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 try {
                     artist.setStartTime(iso8601Format.parse(startTimeString));
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     Log.e(TAG, "Parsing ISO8601 starttime failed", e);
                 }
                 try {
                     artist.setEndTime(iso8601Format.parse(endTimeString));
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     Log.e(TAG, "Parsing ISO8601 endtime failed", e);
                 }
                 artist.setLocation(cursor.getString(6));
@@ -268,7 +269,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
                 try {
                     artist.setUpdatedAt(iso8601Format.parse(updateAtString));
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     Log.e(TAG, "Parsing ISO8601 updatedAt failed", e);
                 }
 

@@ -108,6 +108,17 @@ public class DataFetcher {
 
                                         artist.setDescription(removeHtmlFromString(attributes.optString("body")));
 
+//                                        var urlString = appDict["attributes"]["image"]["thumbnail"].stringValue
+//                                        act.imageBlob = self.getBlobFromUrl(urlString, resolution:"240x240")
+//                                        act.largeImageBlob = self.getBlobFromUrl(urlString, resolution: "600x400")
+
+                                        try {
+                                            String imageUrl = attributes.optJSONObject("image").optString("thumbnail");
+                                            saveUrlBlobs(imageUrl, context, artist, myDbHelper);
+                                        } catch (Exception e) {
+                                            System.out.println("failed!");
+                                        }
+
                                         System.out.println("Parsed: " + artist.getName());
                                         myDbHelper.insertArtist(artist);
                                     }
@@ -145,8 +156,11 @@ public class DataFetcher {
         return htmlString;
     }
 
-    private void getBlobFromUrl(String url, String resolution, Context context, int id) {
-        String urlString = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + resolution);
+    private void saveUrlBlobs(String url, Context context, final Artist artist, final DataBaseHelper myDbHelper) {
+        String urlString = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "240x240");
+        String urlStringLarge = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "600x400");
+        urlString = urlString.replaceAll("\\s", "%20");
+        urlStringLarge = urlStringLarge.replaceAll("\\s", "%20");
 
         ImageRequest request = new ImageRequest(urlString,
                 new Response.Listener<Bitmap>() {
@@ -156,7 +170,33 @@ public class DataFetcher {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                         byte[] byteArray = byteArrayOutputStream .toByteArray();
 
-                        String base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        byte[] base64Image = Base64.encode(byteArray, Base64.DEFAULT);
+                        artist.setThumbnailImageBlob(base64Image);
+                        myDbHelper.insertArtist(artist);
+                        System.out.println("saved!!");
+
+
+                    }
+                }, 0, 0, null,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        MySingleton.getInstance(context).addToRequestQueue(request);
+
+        request = new ImageRequest(urlStringLarge,
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream .toByteArray();
+
+                        byte[] base64Image = Base64.encode(byteArray, Base64.DEFAULT);
+                        artist.setLargeImageBlob(base64Image);
+                        myDbHelper.insertArtist(artist);
+                        System.out.println("saved!!!!");
 
                     }
                 }, 0, 0, null,
