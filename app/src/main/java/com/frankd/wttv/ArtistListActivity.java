@@ -84,36 +84,16 @@ public class ArtistListActivity extends Activity {
     public ArrayList<Artist> getArtistsFromDB() {
         MainApplication mainApplication = (MainApplication) getApplication();
 
-        DataBaseHelper myDbHelper = mainApplication.getDatabaseHelper();
+//        DataBaseHelper myDbHelper = mainApplication.getDatabaseHelper();
 
 
-        return myDbHelper.getAllArtistsFromDB();
+        return mainApplication.getArtists();
     }
 
     public void refreshArtists() {
-        DataBaseHelper myDbHelper = new DataBaseHelper(this);
+        MainApplication mainApplication = (MainApplication) getApplication();
+        DataBaseHelper myDbHelper = mainApplication.getDatabaseHelper();
 
-        try {
-
-            myDbHelper.createDataBase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.openDataBase();
-
-        } catch (SQLException sqle) {
-
-            throw sqle;
-
-        }
-
-        myDbHelper.close();
         DataFetcher dataFetcher = new DataFetcher();
         dataFetcher.getDataFromServer(this, myDbHelper);
         swipeRefreshLayout.setRefreshing(false);

@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class ArtistListAdapter extends ArrayAdapter {
     private ArrayList<Artist> artists;
     private ArrayList<Artist> filteredData;
     private ItemFilter mFilter = new ItemFilter();
+    private ImageLoader imageLoader = ImageLoader.getInstance();
 
     public ArtistListAdapter(Context context, ArrayList<Artist> artists){
         super(context,R.layout.artist_grid_item,artists);
@@ -56,9 +59,10 @@ public class ArtistListAdapter extends ArrayAdapter {
         //set imageview and scale the image making the width 50% of the screen size
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
 
-        imageView.setImageBitmap(getImageFromBase64Blob(curArtist.getThumbnailImageBlob()));
+//        imageView.setImageBitmap(getImageFromBase64Blob(curArtist.getThumbnailImageBlob()));
         RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(width/2,width/2);
         imageView.setLayoutParams(parms);
+        imageLoader.displayImage("db://" + curArtist.getId(), imageView);
 
         TextView artistNameTV = (TextView) convertView.findViewById(R.id.artistNameTV);
         TextView timeDayTV = (TextView) convertView.findViewById(R.id.timeDayTV);

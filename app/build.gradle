@@ -1,4 +1,4 @@
- buildscript {
+buildscript {
     repositories {
         mavenCentral()
     }
@@ -6,7 +6,7 @@
         classpath 'com.android.tools.build:gradle:1.2.3+'
 
     }
- }
+}
 
 apply plugin: 'com.android.application'
 
@@ -35,13 +35,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':Volley')
+
     compile 'com.android.support:support-v13:22.2.0'
-    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:gridlayout-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.1.4'
     compile 'info.hoang8f:android-segmented:1.0.5'
-    compile project(':Volley')
-
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 }

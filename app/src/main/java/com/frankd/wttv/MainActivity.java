@@ -70,9 +70,8 @@ public class MainActivity extends Activity {
         ListView listView = (ListView) findViewById(R.id.listView);
 
         MainApplication application = (MainApplication)getApplication();
-        DataBaseHelper myDbHelper = application.getDatabaseHelper();
 
-        listAdapter = new MainListAdapter(this, myDbHelper.getAllNewsFromDB());
+        listAdapter = new MainListAdapter(this, application.getNewsList());
         listView.setAdapter(listAdapter);
         initMenuDrawer();
     }
