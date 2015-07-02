@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:customAttrs="http://schemas.android.com/apk/res-auto"
     tools:ignore="MissingPrefix"
     android:id="@+id/vegetable_detail"
     android:layout_width="match_parent"

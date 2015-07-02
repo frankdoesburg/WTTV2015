@@ -21,10 +21,17 @@
             android:src="@drawable/menu_background"
             android:scaleType="centerCrop"/>
 
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/grid_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </FrameLayout>
 

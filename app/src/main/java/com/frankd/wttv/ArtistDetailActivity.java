@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -85,7 +86,8 @@ public class ArtistDetailActivity extends Activity {
             this.artist = getArtistsFromDB(ID);
 
             artistNameTV.setText(artist.getName());
-            timeDayTV.setText(artist.getDay() + " " + artist.getStartTime() + " @" + artist.getLocation());
+            SimpleDateFormat time = new SimpleDateFormat("hh:mm");
+            timeDayTV.setText(artist.getDay() + " " + time.format(artist.getStartTime()) + " @" + artist.getLocation());
             descriptionTV.setText(artist.getDescription());
 
         }catch (Exception E){
@@ -131,30 +133,8 @@ public class ArtistDetailActivity extends Activity {
 
 
     public Artist getArtistsFromDB(int ID){
-        DataBaseHelper myDbHelper = new DataBaseHelper(this);
-        myDbHelper = new DataBaseHelper(this);
-
-        try {
-
-            myDbHelper.createDataBase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.openDataBase();
-
-        }catch(SQLException sqle){
-
-            throw sqle;
-
-        }
-
-        myDbHelper.close();
+        MainApplication application = (MainApplication)getApplication();
+        DataBaseHelper myDbHelper = application.getDatabaseHelper();
         return myDbHelper.getArtistFromDB(ID);
     }
 

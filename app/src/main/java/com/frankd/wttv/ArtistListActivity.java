@@ -41,7 +41,7 @@ public class ArtistListActivity extends Activity {
     private GridView artistGrid;
 
     @Override
-       protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.artist_list_layout);
 
@@ -81,30 +81,12 @@ public class ArtistListActivity extends Activity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    public ArrayList<Artist> getArtistsFromDB(){
-        DataBaseHelper myDbHelper = new DataBaseHelper(this);
+    public ArrayList<Artist> getArtistsFromDB() {
+        MainApplication mainApplication = (MainApplication) getApplication();
 
-        try {
+        DataBaseHelper myDbHelper = mainApplication.getDatabaseHelper();
 
-            myDbHelper.createDataBase();
 
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.openDataBase();
-
-        }catch(SQLException sqle){
-
-            throw sqle;
-
-        }
-
-        myDbHelper.close();
         return myDbHelper.getAllArtistsFromDB();
     }
 
@@ -125,7 +107,7 @@ public class ArtistListActivity extends Activity {
 
             myDbHelper.openDataBase();
 
-        }catch(SQLException sqle){
+        } catch (SQLException sqle) {
 
             throw sqle;
 
@@ -149,7 +131,7 @@ public class ArtistListActivity extends Activity {
                     adapter.getFilter().filter("");
                     artistGrid.setSelection(0);
                 }
-                    break;
+                break;
             case R.id.segment_btn_vrij:
                 if (checked) {
                     adapter.getFilter().filter("vrijdag");
@@ -172,7 +154,7 @@ public class ArtistListActivity extends Activity {
         }
     }
 
-    public void initMenuDrawer(){
+    public void initMenuDrawer() {
         //navigation drawer setup
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         //action bar toggle
@@ -215,7 +197,7 @@ public class ArtistListActivity extends Activity {
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -232,7 +214,7 @@ public class ArtistListActivity extends Activity {
         timetable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),TimetableActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TimetableActivity.class);
                 startActivity(intent);
             }
         });
@@ -240,7 +222,7 @@ public class ArtistListActivity extends Activity {
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MapActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MapActivity.class);
                 startActivity(intent);
             }
         });
@@ -248,7 +230,7 @@ public class ArtistListActivity extends Activity {
         favorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),FavoritesActivity.class);
+                Intent intent = new Intent(getApplicationContext(), FavoritesActivity.class);
                 startActivity(intent);
             }
         });

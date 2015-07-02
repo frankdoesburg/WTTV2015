@@ -2,6 +2,7 @@ package com.frankd.wttv;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Application;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -47,6 +48,7 @@ public class MainActivity extends Activity {
     //action bar toggle
     private ActionBarDrawerToggle mDrawerToggle;
     private RequestQueue mQueue;
+    private MainListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,40 +68,13 @@ public class MainActivity extends Activity {
 
         //initialize news feed and listview
         ListView listView = (ListView) findViewById(R.id.listView);
-        //TODO: set listview adapter
-        //TODO: get news from feed if user has access to internet
 
+        MainApplication application = (MainApplication)getApplication();
+        DataBaseHelper myDbHelper = application.getDatabaseHelper();
 
-        DataBaseHelper myDbHelper = new DataBaseHelper(this);
-
-        try {
-
-            myDbHelper.createDataBase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.openDataBase();
-
-        }catch(SQLException sqle){
-
-            throw sqle;
-
-        }
-
-        myDbHelper.close();
-
-        DataFetcher dataFetcher = new DataFetcher();
-        dataFetcher.getDataFromServer(this, myDbHelper);
-
+        listAdapter = new MainListAdapter(this, myDbHelper.getAllNewsFromDB());
+        listView.setAdapter(listAdapter);
         initMenuDrawer();
-
-
     }
 
     @Override

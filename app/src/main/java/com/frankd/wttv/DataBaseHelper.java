@@ -226,6 +226,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.insertWithOnConflict("acts", "null", values, db.CONFLICT_REPLACE);
     }
 
+    public void insertNews(News news) {
+        ContentValues values = new ContentValues();
+
+        DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        values.put("id", news.getId());
+        values.put("title", news.getTitle());
+        values.put("datePublish", iso8601Format.format(news.getDatePublish()));
+        values.put("teaser", news.getTeaser());
+        values.put("body", news.getBody());
+        values.put("image", news.getImageBlob());
+        values.put("largeImage", news.getLargeImageBlob());
+        values.put("video", news.getVideo());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.insertWithOnConflict("news", "null", values, db.CONFLICT_REPLACE);
+    }
+
     public ArrayList<Artist> getAllArtistsFromDB() {
         ArrayList<Artist> artists = new ArrayList<>();
 
@@ -282,6 +301,83 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return artists;
     }
 
+    public ArrayList<News> getAllNewsFromDB() {
+        ArrayList<News> newsArrayList = new ArrayList<>();
+
+        String query = "SELECT * FROM news ORDER by id DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        News news;
+        if(cursor.moveToFirst()) {
+            do {
+                news = new News();
+                news.setId(Integer.parseInt(cursor.getString(0)));
+                news.setTitle(cursor.getString(1));
+
+                String datePublish = cursor.getString(2);
+                DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                try {
+                    news.setDatePublish(iso8601Format.parse(datePublish));
+                } catch (Exception e) {
+                    Log.e(TAG, "Parsing ISO8601 starttime failed", e);
+                }
+                news.setTeaser(cursor.getString(3));
+                news.setBody(cursor.getString(4));
+
+                byte[] blob = cursor.getBlob(5);
+                news.setImageBlob(blob);
+                byte[] blob2 = cursor.getBlob(6);
+                news.setLargeImageBlob(blob2);
+
+                news.setVideo(cursor.getString(7));
+
+                newsArrayList.add(news);
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("getAllNewssFromDB()", "loaded");
+
+        return newsArrayList;
+    }
+
+    public News getNewsFromDB(int id) {
+
+        News news = null;
+
+        String query = "SELECT * FROM " + "news WHERE id='"+ id + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()) {
+            do {
+                news = new News();
+                news.setId(Integer.parseInt(cursor.getString(0)));
+                news.setTitle(cursor.getString(1));
+
+                String datePublish = cursor.getString(2);
+                DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                try {
+                    news.setDatePublish(iso8601Format.parse(datePublish));
+                } catch (Exception e) {
+                    Log.e(TAG, "Parsing ISO8601 starttime failed", e);
+                }
+                news.setTeaser(cursor.getString(3));
+                news.setBody(cursor.getString(4));
+
+                byte[] blob = cursor.getBlob(5);
+                news.setImageBlob(blob);
+                byte[] blob2 = cursor.getBlob(6);
+                news.setLargeImageBlob(blob2);
+
+                news.setVideo(cursor.getString(7));
+
+            } while (cursor.moveToNext());
+        }
+
+        return news;
+    }
+
     @Override
     public synchronized void close() {
 
@@ -300,6 +396,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
+
+
 
     // Add your public helper methods to access and get content from the database.
     // You could return cursors by doing "return myDataBase.query(....)" so it'd be easy

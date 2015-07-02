@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -39,13 +40,13 @@ public class DataFetcher {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray data = response.getJSONArray("data");
-                            for(int i = 0; i < data.length(); i++) {
+                            for (int i = 0; i < data.length(); i++) {
                                 try {
                                     Artist artist = new Artist();
                                     JSONObject obj = data.getJSONObject(i);
                                     artist.setId(obj.optInt("id"));
 
-                                    if(getArtist(artists, artist.getId()) != null) {
+                                    if (getArtist(artists, artist.getId()) != null) {
                                         artist = getArtist(artists, artist.getId());
                                     }
 
@@ -60,7 +61,7 @@ public class DataFetcher {
                                         updatedAt = new Date();
                                     }
 
-                                    if(artist.getUpdatedAt() == null || !artist.getUpdatedAt().equals(updatedAt)) {
+                                    if (artist.getUpdatedAt() == null || !artist.getUpdatedAt().equals(updatedAt)) {
                                         artist.setUpdatedAt(updatedAt);
 
 
@@ -109,7 +110,7 @@ public class DataFetcher {
 
                                         try {
                                             String imageUrl = attributes.optJSONObject("image").optString("thumbnail");
-                                            saveUrlBlobs(imageUrl, context, artist, myDbHelper);
+                                            saveArtistUrlBlobs(imageUrl, context, artist, myDbHelper);
                                         } catch (Exception e) {
                                             System.out.println("failed!");
                                         }
@@ -117,7 +118,6 @@ public class DataFetcher {
                                         System.out.println("Parsed: " + artist.getName());
                                         myDbHelper.insertArtist(artist);
                                     }
-
 
 
                                 } catch (JSONException e) {
@@ -144,14 +144,124 @@ public class DataFetcher {
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
+    public void getNewsFromServer(final Context context, final DataBaseHelper myDbHelper) {
+        String url = "http://welcometothevillage.nl/json/nieuws";
+
+        final ArrayList<News> newsArrayList = myDbHelper.getAllNewsFromDB();
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray data = response.getJSONArray("data");
+                            for (int i = 0; i < data.length(); i++) {
+                                try {
+                                    final News news = new News();
+                                    JSONObject obj = data.getJSONObject(i);
+                                    news.setId(obj.optInt("id"));
+
+                                    JSONObject attributes = obj.getJSONObject("attributes");
+                                    news.setTitle(attributes.optString("title"));
+
+                                    DateFormat jsonDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                    Date datePublish;
+
+                                    try {
+                                        String date = attributes.optString("datepublish");
+                                        datePublish = jsonDateFormat.parse(date);
+                                        news.setDatePublish(datePublish);
+                                        Calendar datePublishCalendar = Calendar.getInstance();
+                                        datePublishCalendar.setTime(datePublish);
+                                        Calendar now = Calendar.getInstance();
+                                        now.setTime(new Date());
+                                        if (datePublishCalendar.get(Calendar.YEAR) == now.get(Calendar.YEAR)) { // only add news items from this year
+                                            if (getNews(newsArrayList, news.getId()) == null) { // only get new newsItems
+
+                                                if (obj.optJSONObject("links") != null) {
+                                                    String newsItemUrl = obj.optJSONObject("links").optString("self");
+                                                    if (newsItemUrl != null) {
+                                                        fetchNewsItem(news, newsItemUrl, myDbHelper, context);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } catch (ParseException e) {
+
+                                    }
+
+                                } catch (JSONException e) {
+                                    Log.d("JSON", "Could not fetch JSON element 'object'");
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+                        } catch (JSONException e) {
+                            Log.d("JSON", "Could not fetch JSON element 'data'");
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
+
+        MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
+    }
+
+    private void fetchNewsItem(final News news, String newsItemUrl, final DataBaseHelper myDbHelper, final Context context) {
+        JsonObjectRequest jsNewsItemObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, newsItemUrl, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject data = response.getJSONObject("data");
+                            JSONObject attributes = data.optJSONObject("attributes");
+
+                            news.setTeaser(removeHtmlFromString(attributes.optString("teaser")));
+                            news.setBody(removeHtmlFromString(attributes.optString("body")));
+                            if(attributes.optJSONObject("video") != null) {
+                                news.setVideo(attributes.optJSONObject("video").optString("url"));
+                            }
+
+                            String url = attributes.optJSONObject("image").optString("thumbnail");
+
+                            saveNewsUrlBlobs(url, context, news, myDbHelper);
+                            System.out.println("Saved: " + news.getTitle());
+                            myDbHelper.insertNews(news);
+
+
+                        } catch (JSONException e) {
+                            Log.d("JSON", "Could not fetch JSON element 'data'");
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+
+                    }
+                });
+        MySingleton.getInstance(context).addToRequestQueue(jsNewsItemObjectRequest);
+    }
+
     private String removeHtmlFromString(String htmlString) {
-        htmlString = htmlString.replaceAll("<[^>]+>","");
-        htmlString = htmlString.replaceAll("&amp;","&");
-        htmlString = htmlString.replaceAll("&nbsp;"," ");
+        htmlString = htmlString.replaceAll("<[^>]+>", "");
+        htmlString = htmlString.replaceAll("&amp;", "&");
+        htmlString = htmlString.replaceAll("&nbsp;", " ");
         return htmlString;
     }
 
-    private void saveUrlBlobs(String url, Context context, final Artist artist, final DataBaseHelper myDbHelper) {
+    private void saveArtistUrlBlobs(String url, Context context, final Artist artist, final DataBaseHelper myDbHelper) {
         String urlString = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "240x240");
         String urlStringLarge = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "600x400");
         urlString = urlString.replaceAll("\\s", "%20");
@@ -161,14 +271,10 @@ public class DataFetcher {
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream .toByteArray();
-
-                        byte[] base64Image = Base64.encode(byteArray, Base64.DEFAULT);
+                        byte[] base64Image = getBase64Bytes(bitmap);
                         artist.setThumbnailImageBlob(base64Image);
                         myDbHelper.insertArtist(artist);
-                        System.out.println("saved!!");
+                        System.out.println("saved artist image!!");
 
 
                     }
@@ -184,14 +290,10 @@ public class DataFetcher {
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream .toByteArray();
-
-                        byte[] base64Image = Base64.encode(byteArray, Base64.DEFAULT);
+                        byte[] base64Image = getBase64Bytes(bitmap);
                         artist.setLargeImageBlob(base64Image);
                         myDbHelper.insertArtist(artist);
-                        System.out.println("saved!!!!");
+                        System.out.println("saved large artist image!!!!");
 
                     }
                 }, 0, 0, null,
@@ -204,10 +306,73 @@ public class DataFetcher {
 
     }
 
+    private void saveNewsUrlBlobs(String url, Context context, final News news, final DataBaseHelper myDbHelper) {
+        String urlString = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "240x240");
+        String urlStringLarge = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "600x400");
+        urlString = urlString.replaceAll("\\s", "%20");
+        urlStringLarge = urlStringLarge.replaceAll("\\s", "%20");
+
+        ImageRequest request = new ImageRequest(urlString,
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        byte[] base64Image = getBase64Bytes(bitmap);
+                        news.setImageBlob(base64Image);
+                        myDbHelper.insertNews(news);
+                        System.out.println("saved news image!!");
+
+
+                    }
+                }, 0, 0, null,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        MySingleton.getInstance(context).addToRequestQueue(request);
+
+        request = new ImageRequest(urlStringLarge,
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap bitmap) {
+                        byte[] base64Image = getBase64Bytes(bitmap);
+                        news.setLargeImageBlob(base64Image);
+                        myDbHelper.insertNews(news);
+                        System.out.println("saved large news image!!!!");
+
+                    }
+                }, 0, 0, null,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        MySingleton.getInstance(context).addToRequestQueue(request);
+
+    }
+
+    private byte[] getBase64Bytes(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+        return Base64.encode(byteArray, Base64.DEFAULT);
+    }
+
+
     private Artist getArtist(ArrayList<Artist> acts, int id) {
         for (Artist artist : acts) {
-            if(artist.getId() == id) {
+            if (artist.getId() == id) {
                 return artist;
+            }
+        }
+        return null;
+    }
+
+    private News getNews(ArrayList<News> newsArrayList, int id) {
+        for (News news : newsArrayList) {
+            if (news.getId() == id) {
+                return news;
             }
         }
         return null;
