@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.tomdoesburg.kooktijden.vegetables.VegetableDetailFragment">
+    tools:context="com.tomdoesburg.kooktijden.vegetables.VegetableDetailFragment"
+    android:background="@color/white"
+    >
 
     <ScrollView
         android:layout_width="match_parent"

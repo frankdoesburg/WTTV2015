@@ -10,7 +10,9 @@
     <RelativeLayout
         android:id="@+id/imageViewParent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        >
 
         <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
             android:id="@+id/imageView"
