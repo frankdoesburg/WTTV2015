@@ -193,7 +193,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
           } while (cursor.moveToNext());
         }
-
+        cursor.close();
         return artist;
     }
 
@@ -297,6 +297,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         Log.d("getAllArtistsFromDB()", "loaded");
+        cursor.close();
+
 
         return artists;
     }
@@ -336,6 +338,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 newsArrayList.add(news);
             } while (cursor.moveToNext());
         }
+        cursor.close();
 
         Log.d("getAllNewssFromDB()", "loaded");
 
@@ -374,6 +377,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             } while (cursor.moveToNext());
         }
+        cursor.close();
 
         return news;
     }

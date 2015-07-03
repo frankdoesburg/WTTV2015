@@ -28,10 +28,8 @@ import java.util.Date;
  */
 public class DataFetcher {
 
-    public void getDataFromServer(final Context context, final DataBaseHelper myDbHelper) {
+    public void getDataFromServer(final Context context, final DataBaseHelper myDbHelper, final ArrayList<Artist> artists) {
         String url = "http://welcometothevillage.nl/json/acts";
-
-        final ArrayList<Artist> artists = myDbHelper.getAllArtistsFromDB();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -144,10 +142,8 @@ public class DataFetcher {
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    public void getNewsFromServer(final Context context, final DataBaseHelper myDbHelper) {
+    public void getNewsFromServer(final Context context, final DataBaseHelper myDbHelper, final ArrayList<News> newsArrayList) {
         String url = "http://welcometothevillage.nl/json/nieuws";
-
-        final ArrayList<News> newsArrayList = myDbHelper.getAllNewsFromDB();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {

@@ -49,13 +49,14 @@ public class MainApplication extends Application {
         }
 
         mDbHelper.close();
+        System.out.println();
         DataFetcher dataFetcher = new DataFetcher();
-        dataFetcher.getDataFromServer(this, mDbHelper);
-        dataFetcher.getNewsFromServer(this, mDbHelper);
-
-        artistList = mDbHelper.getAllArtistsFromDB();
         newsList = mDbHelper.getAllNewsFromDB();
-
+        artistList = mDbHelper.getAllArtistsFromDB();
+        dataFetcher.getDataFromServer(this, mDbHelper, artistList);
+        dataFetcher.getNewsFromServer(this, mDbHelper, newsList);
+        
+        //Config for async image loader
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
         .imageDownloader(new SqliteImageDownloader(this, mDbHelper))
                 .build();
