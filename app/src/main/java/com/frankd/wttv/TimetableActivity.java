@@ -60,7 +60,7 @@ public class TimetableActivity extends Activity {
         //set timetable image
         imgView = (SubsamplingScaleImageView)findViewById(R.id.imageView);
         imgView.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
-        imgView.setImage(ImageSource.resource(R.drawable.blokkenschema_vrij), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
+        imgView.setImage(ImageSource.asset("blokkenschema_vrij.jpg"), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
 
         SegmentedGroup segmentedGroup = (SegmentedGroup) findViewById(R.id.segmented_control);
         segmentedGroup.setTintColor(Color.parseColor("#333333"), Color.parseColor("#ffffff"));
@@ -78,19 +78,19 @@ public class TimetableActivity extends Activity {
         switch (view.getId()) {
             case R.id.segment_btn_vrij:
                 if (checked) {
-                    imgView.setImage(ImageSource.resource(R.drawable.blokkenschema_vrij), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
+                    imgView.setImage(ImageSource.asset("blokkenschema_vrij.jpg"), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
 
                 }
                 break;
             case R.id.segment_btn_zat:
                 if (checked) {
-                    imgView.setImage(ImageSource.resource(R.drawable.blokkenschema_zat), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
+                    imgView.setImage(ImageSource.asset("blokkenschema_zat.jpg"), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
 
                 }
                 break;
             case R.id.segment_btn_zon:
                 if (checked) {
-                    imgView.setImage(ImageSource.resource(R.drawable.blokkenschema_zon), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
+                    imgView.setImage(ImageSource.asset("blokkenschema_zon.jpg"), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
 
                 }
 

@@ -63,7 +63,7 @@ public class MapActivity extends Activity {
         //set timetable image
         SubsamplingScaleImageView imgView = (SubsamplingScaleImageView)findViewById(R.id.imageView);
         imgView.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
-        imgView.setImage(ImageSource.resource(R.drawable.plattegrond), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
+        imgView.setImage(ImageSource.asset("plattegrond.jpg"), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
 
 
         initMenuDrawer();
