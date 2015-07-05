@@ -212,8 +212,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("name", artist.getName());
         values.put("description", artist.getDescription());
         values.put("location", artist.getLocation());
-        values.put("startTime", iso8601Format.format(artist.getStartTime()));
-        values.put("endTime", iso8601Format.format(artist.getEndTime()));
+        if(artist.getStartTime()!= null) {
+            values.put("startTime", iso8601Format.format(artist.getStartTime()));
+        } else {
+            values.put("startTime", "");
+        }
+
+        if(artist.getEndTime()!= null) {
+            values.put("endTime", iso8601Format.format(artist.getEndTime()));
+        } else {
+            values.put("endTime", "");
+        }
         values.put("day", artist.getDay());
         values.put("youtube", artist.getYoutubeLink());
         values.put("favorite", artist.isFavorite());

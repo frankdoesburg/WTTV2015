@@ -59,7 +59,7 @@ public class ArtistListActivity extends Activity {
         actionBar.setTitle(s);
 
         //get artist list from database
-//        artistList = getArtistsFromDB();
+        artistList = getArtists();
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.grid_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -72,60 +72,21 @@ public class ArtistListActivity extends Activity {
         segmentedGroup.setTintColor(Color.parseColor("#333333"), Color.parseColor("#ffffff"));
 
         artistGrid = (GridView) findViewById(R.id.gridView);
-//        adapter = new ArtistListAdapter(this, artistList);
-//        artistGrid.setAdapter(adapter);
+        adapter = new ArtistListAdapter(this, artistList);
+        artistGrid.setAdapter(adapter);
         context = this;
-        LoadAdapterTask loadAdapterTask = new LoadAdapterTask();
-        loadAdapterTask.execute();
-
-
 
         initMenuDrawer();
 
     }
 
-    //TODO getAllArtistsFromDB is traag. Dit moet zo min mogelijk, 1 keer bij opstarten en verder alleen als er gerefreshed wordt en er is nieuwe data. Dan kan je gewoon loading schermpje laten zien.
-
-    private class LoadAdapterTask extends
-            AsyncTask<Void, String, ArrayList<Artist>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected ArrayList<Artist> doInBackground(Void... params) {
-            MainApplication mainApplication = (MainApplication) getApplication();
-            ArrayList<Artist> artists = mainApplication.getDatabaseHelper().getAllArtistsFromDB();
-            return artists;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Artist> result) {
-            super.onPostExecute(result);
-
-            adapter = new ArtistListAdapter(context, result);
-
-            artistGrid.setAdapter(adapter);
-
-        }
-    }
 
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    public ArrayList<Artist> getArtistsFromDB() {
+    public ArrayList<Artist> getArtists() {
         MainApplication mainApplication = (MainApplication) getApplication();
-
-//        DataBaseHelper myDbHelper = mainApplication.getDatabaseHelper();
-
-
         return mainApplication.getArtists();
     }
 
@@ -134,7 +95,7 @@ public class ArtistListActivity extends Activity {
         DataBaseHelper myDbHelper = mainApplication.getDatabaseHelper();
 
         DataFetcher dataFetcher = new DataFetcher();
-        dataFetcher.getDataFromServer(this, myDbHelper, artistList);
+        dataFetcher.getDataFromServer(this, myDbHelper, artistList, mainApplication);
         swipeRefreshLayout.setRefreshing(false);
 
     }

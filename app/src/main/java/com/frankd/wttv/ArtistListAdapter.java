@@ -68,8 +68,17 @@ public class ArtistListAdapter extends ArrayAdapter {
         TextView timeDayTV = (TextView) convertView.findViewById(R.id.timeDayTV);
 
         artistNameTV.setText(curArtist.getName());
-        SimpleDateFormat time = new SimpleDateFormat("hh:mm");
-        timeDayTV.setText(curArtist.getDay() + " " + time.format(curArtist.getStartTime()) + " @" + curArtist.getLocation());
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+        String startTime = "";
+        if(curArtist.getStartTime() != null) {
+            startTime = time.format(curArtist.getStartTime());
+        }
+        String location = " @ ";
+        if(curArtist.getLocation() != "") {
+            location = location.concat(curArtist.getLocation());
+
+        }
+        timeDayTV.setText(curArtist.getDay() + " " + startTime + location);
 
         convertView.setId(curArtist.getId());
 

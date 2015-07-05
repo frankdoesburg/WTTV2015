@@ -86,8 +86,17 @@ public class ArtistDetailActivity extends Activity {
             this.artist = getArtistsFromDB(ID);
 
             artistNameTV.setText(artist.getName());
-            SimpleDateFormat time = new SimpleDateFormat("hh:mm");
-            timeDayTV.setText(artist.getDay() + " " + time.format(artist.getStartTime()) + " @" + artist.getLocation());
+            SimpleDateFormat time = new SimpleDateFormat("HH:mm");
+            String startTime = "";
+            if(artist.getStartTime() != null) {
+                startTime = time.format(artist.getStartTime());
+            }
+            String location = " @ ";
+            if(artist.getLocation() != "") {
+                 location = location.concat(artist.getLocation());
+
+            }
+            timeDayTV.setText(artist.getDay() + " " + startTime + location);
             descriptionTV.setText(artist.getDescription());
 
         }catch (Exception E){

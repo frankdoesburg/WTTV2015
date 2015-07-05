@@ -21,6 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -28,7 +30,7 @@ import java.util.Date;
  */
 public class DataFetcher {
 
-    public void getDataFromServer(final Context context, final DataBaseHelper myDbHelper, final ArrayList<Artist> artists) {
+    public void getDataFromServer(final Context context, final DataBaseHelper myDbHelper, final ArrayList<Artist> artists, final MainApplication mainApplication) {
         String url = "http://welcometothevillage.nl/json/acts";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -36,6 +38,7 @@ public class DataFetcher {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        ArrayList<Artist> artistArrayList = artists;
                         try {
                             JSONArray data = response.getJSONArray("data");
                             for (int i = 0; i < data.length(); i++) {
@@ -44,8 +47,8 @@ public class DataFetcher {
                                     JSONObject obj = data.getJSONObject(i);
                                     artist.setId(obj.optInt("id"));
 
-                                    if (getArtist(artists, artist.getId()) != null) {
-                                        artist = getArtist(artists, artist.getId());
+                                    if (getArtist(artistArrayList, artist.getId()) != null) {
+                                        artist = getArtist(artistArrayList, artist.getId());
                                     }
 
                                     JSONObject attributes = obj.getJSONObject("attributes");
@@ -66,11 +69,11 @@ public class DataFetcher {
                                         artist.setName(attributes.optString("title"));
 
                                         try {
-                                            String date = attributes.optString("datetime_aanvang");
+                                            String date = attributes.optString("datetime");
                                             artist.setStartTime(jsonDateFormat.parse(date));
 
                                         } catch (Exception e) {
-                                            artist.setStartTime(new Date());
+                                            artist.setStartTime(null);
                                         }
 
                                         try {
@@ -101,20 +104,21 @@ public class DataFetcher {
                                             JSONObject location = attributes.optJSONObject("taxonomy").optJSONObject("locaties");
                                             artist.setLocation(location.optString(location.keys().next()));
                                         } catch (Exception e) {
-                                            artist.setLocation("Podium");
+                                            artist.setLocation("");
                                         }
 
                                         artist.setDescription(removeHtmlFromString(attributes.optString("body")));
 
                                         try {
                                             String imageUrl = attributes.optJSONObject("image").optString("thumbnail");
-                                            saveArtistUrlBlobs(imageUrl, context, artist, myDbHelper);
+                                            saveArtistUrlBlobs(imageUrl, context, artist, myDbHelper, mainApplication);
                                         } catch (Exception e) {
                                             System.out.println("failed!");
                                         }
 
                                         System.out.println("Parsed: " + artist.getName());
                                         myDbHelper.insertArtist(artist);
+                                        artistArrayList = updateArtist(artist, artistArrayList);
                                     }
 
 
@@ -123,7 +127,8 @@ public class DataFetcher {
                                     e.printStackTrace();
                                 }
                             }
-
+                            // return artists
+                            mainApplication.setArtistList(artists);
 
                         } catch (JSONException e) {
                             Log.d("JSON", "Could not fetch JSON element 'data'");
@@ -142,7 +147,7 @@ public class DataFetcher {
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    public void getNewsFromServer(final Context context, final DataBaseHelper myDbHelper, final ArrayList<News> newsArrayList) {
+    public void getNewsFromServer(final Context context, final DataBaseHelper myDbHelper, final ArrayList<News> newsArrayList, final MainApplication mainApplication) {
         String url = "http://welcometothevillage.nl/json/nieuws";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -178,7 +183,7 @@ public class DataFetcher {
                                                 if (obj.optJSONObject("links") != null) {
                                                     String newsItemUrl = obj.optJSONObject("links").optString("self");
                                                     if (newsItemUrl != null) {
-                                                        fetchNewsItem(news, newsItemUrl, myDbHelper, context);
+                                                        fetchNewsItem(news, newsItemUrl, myDbHelper, context, mainApplication);
                                                     }
                                                 }
                                             }
@@ -211,12 +216,13 @@ public class DataFetcher {
         MySingleton.getInstance(context).addToRequestQueue(jsObjRequest);
     }
 
-    private void fetchNewsItem(final News news, String newsItemUrl, final DataBaseHelper myDbHelper, final Context context) {
+    private void fetchNewsItem(final News news, String newsItemUrl, final DataBaseHelper myDbHelper, final Context context, final MainApplication mainApplication) {
         JsonObjectRequest jsNewsItemObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, newsItemUrl, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
+
                         try {
                             JSONObject data = response.getJSONObject("data");
                             JSONObject attributes = data.optJSONObject("attributes");
@@ -229,9 +235,12 @@ public class DataFetcher {
 
                             String url = attributes.optJSONObject("image").optString("thumbnail");
 
-                            saveNewsUrlBlobs(url, context, news, myDbHelper);
+                            saveNewsUrlBlobs(url, context, news, myDbHelper, mainApplication);
                             System.out.println("Saved: " + news.getTitle());
                             myDbHelper.insertNews(news);
+                            ArrayList<News> newsArrayList = updateNews(news, mainApplication.getNewsList());
+                            mainApplication.setNewsList(newsArrayList);
+
 
 
                         } catch (JSONException e) {
@@ -257,7 +266,7 @@ public class DataFetcher {
         return htmlString;
     }
 
-    private void saveArtistUrlBlobs(String url, Context context, final Artist artist, final DataBaseHelper myDbHelper) {
+    private void saveArtistUrlBlobs(String url, Context context, final Artist artist, final DataBaseHelper myDbHelper, final MainApplication mainApplication) {
         String urlString = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "240x240");
         String urlStringLarge = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "600x400");
         urlString = urlString.replaceAll("\\s", "%20");
@@ -270,6 +279,8 @@ public class DataFetcher {
                         byte[] base64Image = getBase64Bytes(bitmap);
                         artist.setThumbnailImageBlob(base64Image);
                         myDbHelper.insertArtist(artist);
+                        ArrayList<Artist> artists = updateArtist(artist, mainApplication.getArtists());
+                        mainApplication.setArtistList(artists);
                         System.out.println("saved artist image!!");
 
 
@@ -289,6 +300,8 @@ public class DataFetcher {
                         byte[] base64Image = getBase64Bytes(bitmap);
                         artist.setLargeImageBlob(base64Image);
                         myDbHelper.insertArtist(artist);
+                        ArrayList<Artist> artists = updateArtist(artist, mainApplication.getArtists());
+                        mainApplication.setArtistList(artists);
                         System.out.println("saved large artist image!!!!");
 
                     }
@@ -302,7 +315,7 @@ public class DataFetcher {
 
     }
 
-    private void saveNewsUrlBlobs(String url, Context context, final News news, final DataBaseHelper myDbHelper) {
+    private void saveNewsUrlBlobs(String url, Context context, final News news, final DataBaseHelper myDbHelper, final MainApplication mainApplication) {
         String urlString = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "240x240");
         String urlStringLarge = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "600x400");
         urlString = urlString.replaceAll("\\s", "%20");
@@ -315,6 +328,8 @@ public class DataFetcher {
                         byte[] base64Image = getBase64Bytes(bitmap);
                         news.setImageBlob(base64Image);
                         myDbHelper.insertNews(news);
+                        ArrayList<News> newsArrayList = updateNews(news, mainApplication.getNewsList());
+                        mainApplication.setNewsList(newsArrayList);
                         System.out.println("saved news image!!");
 
 
@@ -334,6 +349,8 @@ public class DataFetcher {
                         byte[] base64Image = getBase64Bytes(bitmap);
                         news.setLargeImageBlob(base64Image);
                         myDbHelper.insertNews(news);
+                        ArrayList<News> newsArrayList = updateNews(news, mainApplication.getNewsList());
+                        mainApplication.setNewsList(newsArrayList);
                         System.out.println("saved large news image!!!!");
 
                     }
@@ -365,6 +382,24 @@ public class DataFetcher {
         return null;
     }
 
+    private ArrayList<Artist> updateArtist(Artist updatedArtist, ArrayList<Artist> artists) {
+        for (int i = 0; i < artists.size(); i++) {
+            if (artists.get(i).getId() == updatedArtist.getId()) {
+                artists.remove(i);
+                artists.add(updatedArtist);
+            }
+        }
+        Collections.sort(artists, new Comparator<Artist>() {
+            @Override
+            public int compare(Artist artist1, Artist artist2) {
+
+                return artist1.getName().compareTo(artist2.getName());
+            }
+        });
+        return artists;
+
+    }
+
     private News getNews(ArrayList<News> newsArrayList, int id) {
         for (News news : newsArrayList) {
             if (news.getId() == id) {
@@ -372,6 +407,24 @@ public class DataFetcher {
             }
         }
         return null;
+    }
+
+    private ArrayList<News> updateNews(News updatedNews, ArrayList<News> newsList) {
+        for (int i = 0; i < newsList.size(); i++) {
+            if (newsList.get(i).getId() == updatedNews.getId()) {
+                newsList.remove(i);
+                newsList.add(updatedNews);
+            }
+        }
+        Collections.sort(newsList, new Comparator<News>() {
+            @Override
+            public int compare(News news1, News news2) {
+
+                return news1.getDatePublish().compareTo(news2.getDatePublish());
+            }
+        });
+        return newsList;
+
     }
 
 
