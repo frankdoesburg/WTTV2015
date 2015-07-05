@@ -17,6 +17,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -30,7 +34,7 @@ public class FavoritesActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     //action bar toggle
     private ActionBarDrawerToggle mDrawerToggle;
-
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +53,43 @@ public class FavoritesActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setTitle(s);
 
-        ListView listView = (ListView) findViewById(R.id.listView);
-        //TODO: set list adapter
-        //TODO: load and show favorites
+        listView = (ListView) findViewById(R.id.listView);
 
         initMenuDrawer();
+    }
+
+    @Override
+    public void onResume(){
+        ArrayList<Artist> favorites = getFavorites();
+        FavoritesListAdapter adapter = new FavoritesListAdapter(this,favorites);
+        listView.setAdapter(adapter);
+
+        //overlay with empty list message
+        LinearLayout emptyListOverlay = (LinearLayout) findViewById(R.id.emptyListOverlay);
+
+        //show empty list message when there are no favorites
+        if(favorites == null || favorites.isEmpty()){
+            emptyListOverlay.setVisibility(View.VISIBLE);
+        }else{
+            //favorites list is not empty: load list and hide overlay
+            emptyListOverlay.setVisibility(View.INVISIBLE);
+        }
+
+        super.onResume();
+    }
+
+    public ArrayList<Artist> getFavorites(){
+        MainApplication application = (MainApplication)getApplication();
+
+        ArrayList<Artist> favorites = new ArrayList<>();
+        ArrayList<Artist> allArtists = application.getArtists();
+
+        for(Artist A : allArtists){
+            if(A.isFavorite()){
+                favorites.add(A);
+            }
+        }
+        return favorites;
     }
 
     protected void attachBaseContext(Context newBase) {

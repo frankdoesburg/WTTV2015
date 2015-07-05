@@ -23,7 +23,26 @@
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:divider="@null"/>
+
+        <LinearLayout
+            android:id="@+id/emptyListOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/whiteTransparent"
+            android:gravity="center_vertical|center_horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_favorites"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:textColor="@color/gray_black"
+                />
+        </LinearLayout>
 
     </FrameLayout>
 
