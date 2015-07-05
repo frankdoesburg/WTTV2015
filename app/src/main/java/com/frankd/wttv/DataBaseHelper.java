@@ -146,6 +146,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+
     public Artist getArtistFromDB(int ID){
         Artist artist = null;
 
@@ -175,7 +176,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
                 }
 
-                    artist.setLocation(cursor.getString(6));
+                artist.setLocation(cursor.getString(6));
                 artist.setYoutubeLink(cursor.getString(7));
                 artist.setFavorite(cursor.getInt(8) == 1);
                 byte[] blob = cursor.getBlob(9);

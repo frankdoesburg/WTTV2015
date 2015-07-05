@@ -50,7 +50,8 @@ public class FavoritesActivity extends Activity {
         actionBar.setTitle(s);
 
         ListView listView = (ListView) findViewById(R.id.listView);
-
+        //TODO: set list adapter
+        //TODO: load and show favorites
 
         initMenuDrawer();
     }

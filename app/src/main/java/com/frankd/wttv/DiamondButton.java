@@ -14,28 +14,8 @@ import android.widget.ImageButton;
  */
 public class DiamondButton extends ImageButton {
 
-    private boolean isPressed = false;
-
     public DiamondButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    DiamondButton.this.isPressed = true;
-                    DiamondButton.this.invalidate();
-                } else if (event.getAction() == MotionEvent.ACTION_UP){
-                    DiamondButton.this.isPressed = false;
-                    DiamondButton.this.invalidate();
-                }else {
-                    DiamondButton.this.isPressed = false;
-                    DiamondButton.this.invalidate();
-                }
-
-                return true;
-            }
-        });
     }
 
 
@@ -56,11 +36,7 @@ public class DiamondButton extends ImageButton {
         //setup the paint for fill
         Paint mBorderPaint = new Paint();
         mBorderPaint.setAlpha(255);
-        if(isPressed) {
-            mBorderPaint.setColor(getResources().getColor(R.color.teal_light));
-        }else{
-            mBorderPaint.setColor(getResources().getColor(R.color.teal));
-        }
+        mBorderPaint.setColor(getResources().getColor(R.color.teal));
         mBorderPaint.setStyle(Paint.Style.FILL);
 
         //draw it

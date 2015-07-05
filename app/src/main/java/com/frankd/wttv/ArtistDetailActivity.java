@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -38,6 +39,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class ArtistDetailActivity extends Activity {
     private static final String TAG = "ArtistDetailActivity";
     private Artist artist;
+    private ImageButton favoriteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class ArtistDetailActivity extends Activity {
         //get top layout that contains textviews and imageview
         RelativeLayout topPanel = (RelativeLayout) findViewById(R.id.topPanel);
         //get button
-        final ImageButton favoriteButton = (ImageButton) findViewById(R.id.favoriteButton);
+        favoriteButton = (ImageButton) findViewById(R.id.favoriteButton);
         //set button and top panel invisible initially
         favoriteButton.setVisibility(View.INVISIBLE);
         topPanel.setVisibility(View.INVISIBLE);
@@ -98,6 +100,16 @@ public class ArtistDetailActivity extends Activity {
             }
             timeDayTV.setText(artist.getDay() + " " + startTime + location);
             descriptionTV.setText(artist.getDescription());
+
+            //set heart icon based on artist being favorite
+            if(artist.isFavorite()){
+                Log.v(TAG,"isFavorite == true");
+                favoriteButton.setImageResource(R.drawable.heart_closed);
+            }else{
+                Log.v(TAG,"isFavorite == false");
+                favoriteButton.setImageResource(R.drawable.heart_open);
+            }
+
 
         }catch (Exception E){
             Log.v(TAG, "could not find artist with in database");
@@ -133,7 +145,74 @@ public class ArtistDetailActivity extends Activity {
         topPanel.setVisibility(View.VISIBLE);
         topPanel.startAnimation(titleAnimation);
 
+        favoriteButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    toggleFavorite();
+                }
+                return false;
+            }
+        });
 
+    }
+
+    @Override
+    public void onResume(){
+        //set heart icon based on artist being favorite
+        if(artist.isFavorite()){
+            Log.v(TAG,"isFavorite == true");
+            favoriteButton.setImageResource(R.drawable.heart_closed);
+        }else{
+            Log.v(TAG,"isFavorite == false");
+            favoriteButton.setImageResource(R.drawable.heart_open);
+        }
+
+        super.onResume();
+    }
+
+    //set heart icon and update artist favorite status
+    public void toggleFavorite(){
+
+        if(artist.isFavorite()){
+            //un-favorite arist
+            //locally
+            artist.setFavorite(false);
+
+            //in database and then in central arraylist
+            setFavorite(artist.getId(), false);
+
+        }else{
+            //make artist favorite
+            //locally
+            artist.setFavorite(true);
+
+            //and in database and then in central arraylist
+             setFavorite(artist.getId(),true);
+        }
+
+        //update heart icon
+        setHeartIcon(artist.isFavorite());
+    }
+
+    //sets the artist favorite status in DB and in central arrayList
+    public void setFavorite(int ID, boolean favorite){
+        MainApplication application = (MainApplication)getApplication();
+        DataBaseHelper myDbHelper = application.getDatabaseHelper();
+
+        //overwrite existing artist in DB
+        myDbHelper.insertArtist(artist);
+        //set favorite in central arraylist
+        application.setFavorite(ID,favorite);
+    }
+
+    public void setHeartIcon(boolean isFavorite){
+
+        if(artist.isFavorite()){
+            favoriteButton.setImageResource(R.drawable.heart_closed);
+        }else{
+            favoriteButton.setImageResource(R.drawable.heart_open);
+        }
     }
 
     protected void attachBaseContext(Context newBase) {

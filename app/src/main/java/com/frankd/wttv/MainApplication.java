@@ -70,6 +70,16 @@ public class MainApplication extends Application {
         mDbHelper = null;
     }
 
+    //find artist by ID and set its favorite status
+    public void setFavorite(int ID, boolean favorite){
+        for(Artist A : this.artistList){
+            if(A.getId() == ID){
+                A.setFavorite(favorite);
+                break;
+            }
+        }
+    }
+
     public static DataBaseHelper getDatabaseHelper() {
         return mDbHelper;
     }
