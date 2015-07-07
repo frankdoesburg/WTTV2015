@@ -3,6 +3,7 @@
     package="com.frankd.wttv" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".MainApplication"
@@ -52,6 +53,17 @@
             android:label="@string/favorites"
             android:screenOrientation="portrait" >
         </activity>
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="INTENT_ACTION"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".AlarmSetter" >
+            <intent-filter>
+                <action
+                    android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

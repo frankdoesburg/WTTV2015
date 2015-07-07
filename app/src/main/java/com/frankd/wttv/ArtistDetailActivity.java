@@ -2,6 +2,8 @@ package com.frankd.wttv;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
@@ -30,6 +32,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -38,6 +42,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class ArtistDetailActivity extends Activity {
     private static final String TAG = "ArtistDetailActivity";
+    public static final String NOTIFICATION_INFO = "NOTIFICATION_INFO"; //used in AlarmReceiver class
+    public static final String INTENT_ACTION = "INTENT_ACTION"; //used in AlarmReceiver class
+
     private Artist artist;
     private ImageButton favoriteButton;
 
@@ -103,10 +110,8 @@ public class ArtistDetailActivity extends Activity {
 
             //set heart icon based on artist being favorite
             if(artist.isFavorite()){
-                Log.v(TAG,"isFavorite == true");
                 favoriteButton.setImageResource(R.drawable.heart_closed);
             }else{
-                Log.v(TAG,"isFavorite == false");
                 favoriteButton.setImageResource(R.drawable.heart_open);
             }
 
@@ -161,10 +166,8 @@ public class ArtistDetailActivity extends Activity {
     public void onResume(){
         //set heart icon based on artist being favorite
         if(artist.isFavorite()){
-            Log.v(TAG,"isFavorite == true");
             favoriteButton.setImageResource(R.drawable.heart_closed);
         }else{
-            Log.v(TAG,"isFavorite == false");
             favoriteButton.setImageResource(R.drawable.heart_open);
         }
 
@@ -188,7 +191,7 @@ public class ArtistDetailActivity extends Activity {
             artist.setFavorite(true);
 
             //and in database and then in central arraylist
-             setFavorite(artist.getId(),true);
+             setFavorite(artist.getId(), true);
         }
 
         //update heart icon
@@ -203,7 +206,54 @@ public class ArtistDetailActivity extends Activity {
         //overwrite existing artist in DB
         myDbHelper.insertArtist(artist);
         //set favorite in central arraylist
-        application.setFavorite(ID,favorite);
+        application.setFavorite(ID, favorite);
+
+        //schedule or cancel alarm
+        if(favorite){
+            setAlarm();
+        }else{
+            cancelAlarm();
+        }
+    }
+
+    //sets reminder notification using AlarmManager for current artist
+    public void setAlarm(){
+        Log.v(TAG,"setting alarm for " + artist.getName());
+        Date startTime = artist.getStartTime();
+
+       // Date newDate = new Date(System.currentTimeMillis() + 10*1000); //temp, for testing purposes!
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar =  Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        calendar.setTime(startTime); // notification time from artist date
+
+        String time =  Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE));
+        String stageName = artist.getLocation();
+
+        long when = calendar.getTimeInMillis();
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.setAction(INTENT_ACTION);
+        intent.putExtra(ArtistDetailActivity.NOTIFICATION_INFO, artist.getName() + " " + getString(R.string.starts_at) + " " + time + " " + getString(R.string.at_stage) + " " + stageName);
+
+        //startService(intent);//temp
+        PendingIntent pi = PendingIntent.getBroadcast(this, artist.getId(),intent,PendingIntent.FLAG_ONE_SHOT);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, when, pi);
+
+    }
+
+    //cancels reminder notification using AlarmManager for current artist
+    public void cancelAlarm(){
+        //create a similar intent with the artist ID as unique identifier so we can cancel the existing intent.
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.setAction(INTENT_ACTION);
+        PendingIntent pi = PendingIntent.getBroadcast(this, artist.getId(),intent,PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+        alarmManager.cancel(pi);
+
+        Log.v(TAG,"alarm cancelled for artist " + artist.getName());
     }
 
     public void setHeartIcon(boolean isFavorite){
@@ -214,6 +264,8 @@ public class ArtistDetailActivity extends Activity {
             favoriteButton.setImageResource(R.drawable.heart_open);
         }
     }
+
+
 
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));

@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -192,7 +193,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 }
 
 
-          } while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         return artist;
@@ -202,6 +203,61 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         byte[] decodedString = Base64.decode(blob, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return decodedByte;
+    }
+
+    public ArrayList<Artist> getFavoritesFromDB(){
+        ArrayList<Artist> favorites = new ArrayList<>();
+
+        Artist artist = null;
+
+        String query = "SELECT * FROM acts WHERE favorite='1'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()) {
+            do {
+                artist = new Artist();
+                artist.setId(Integer.parseInt(cursor.getString(0)));
+                artist.setName(cursor.getString(1));
+                artist.setDescription(cursor.getString(2));
+                artist.setDay(cursor.getString(3));
+                String startTimeString = cursor.getString(4);
+                String endTimeString = cursor.getString(5);
+                DateFormat iso8601Format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                try {
+                    artist.setStartTime(iso8601Format.parse(startTimeString));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ISO8601 starttime failed", e);
+
+                }
+                try {
+                    artist.setEndTime(iso8601Format.parse(endTimeString));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ISO8601 endtime failed", e);
+
+                }
+
+                artist.setLocation(cursor.getString(6));
+                artist.setYoutubeLink(cursor.getString(7));
+                artist.setFavorite(cursor.getInt(8) == 1);
+                byte[] blob = cursor.getBlob(9);
+                artist.setThumbnailImageBlob(blob);
+                byte[] blob2 = cursor.getBlob(10);
+                artist.setLargeImageBlob(blob2);
+                String updateAtString = cursor.getString(11);
+
+                try {
+                    artist.setUpdatedAt(iso8601Format.parse(updateAtString));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ISO8601 updatedAt failed", e);
+                }
+                favorites.add(artist);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        Log.v(TAG,"found favorites " + favorites.size());
+
+        return favorites;
     }
 
     public void insertArtist(Artist artist) {

@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import java.util.Date;
 
 public class Artist {
+    public static final String TAG = "ARTIST";
+
     private int id;
     private String name;
     private String description;
