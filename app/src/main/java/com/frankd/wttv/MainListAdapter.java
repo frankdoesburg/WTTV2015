@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
  * Created by Tom on 28/6/15.
  */
 public class MainListAdapter extends ArrayAdapter {
+    private final String TAG = "MainListAdapter";
+
 
     private Context context;
     private ArrayList<News> news;
@@ -48,7 +51,12 @@ public class MainListAdapter extends ArrayAdapter {
         //set imageview and scale the image making the width 50% of the screen size
         ImageView imageView = (ImageView) convertView.findViewById(R.id.newsCellImageView);
 
-        imageView.setImageBitmap(getImageFromBase64Blob(curNews.getImageBlob()));
+        try {
+            imageView.setImageBitmap(getImageFromBase64Blob(curNews.getImageBlob()));
+        }catch (NullPointerException ex){
+            Log.v(TAG,ex.toString());
+            imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.wttv_logo));
+        }
 
         TextView title = (TextView) convertView.findViewById(R.id.newsTitle);
         TextView teaser = (TextView) convertView.findViewById(R.id.newsTeaser);

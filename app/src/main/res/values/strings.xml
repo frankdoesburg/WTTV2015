@@ -18,10 +18,12 @@
     <string name="no_favorites">Je hebt nog geen favorieten</string>
     <string name="title_activity_splash">WTTV 2015</string>
 
-
-    <string name="notification_title">Het is bijna zo ver!</string>
+    <string name="reminder_on">Je krijgt een herinnering voordat deze act begint</string>
+    <string name="notification_title">Welcome to the Village</string>
     <string name="starts_at">start om</string>
+    <string name="starts_soon">start bijna</string>
     <string name="at_stage">op podium</string>
+    <string name="notification_short_text">Act begint bijna!</string>
     <string name="notification_backup_text">Een van je favorieten begint zo.</string>
 
 </resources>

@@ -39,8 +39,9 @@ public class AlarmSetter extends BroadcastReceiver {
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 Calendar calendar =  Calendar.getInstance();
 
-                calendar.setTimeInMillis(System.currentTimeMillis());
                 calendar.setTime(startTime); // notification time from artist date
+                calendar.add(Calendar.MINUTE,-10);//set alarm 10 minutes before starttime
+
                 String time =  Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE));
                 String stageName = artist.getLocation();
 
@@ -49,8 +50,7 @@ public class AlarmSetter extends BroadcastReceiver {
                 intent.setAction(INTENT_ACTION);
                 intent.putExtra(ArtistDetailActivity.NOTIFICATION_INFO, artist.getName() + " " + context.getString(R.string.starts_at) + " " + time + " " + context.getString(R.string.at_stage) + " " + stageName);
 
-                //startService(intent);//temp
-                PendingIntent pi = PendingIntent.getBroadcast(context, artist.getId(),intent,PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent pi = PendingIntent.getBroadcast(context, artist.getId(),intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
                 alarmManager.set(AlarmManager.RTC_WAKEUP, when, pi);
             }

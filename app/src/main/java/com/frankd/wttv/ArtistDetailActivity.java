@@ -6,10 +6,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Spannable;
@@ -24,14 +22,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -99,6 +94,8 @@ public class ArtistDetailActivity extends Activity {
             String startTime = "";
             if(artist.getStartTime() != null) {
                 startTime = time.format(artist.getStartTime());
+            }else{
+                Log.v(TAG,"artist " + artist.getId() + " has no starttime!");
             }
             String location = " @ ";
             if(artist.getLocation() != "") {
@@ -219,29 +216,37 @@ public class ArtistDetailActivity extends Activity {
     //sets reminder notification using AlarmManager for current artist
     public void setAlarm(){
         Log.v(TAG,"setting alarm for " + artist.getName());
-        Date startTime = artist.getStartTime();
 
-       // Date newDate = new Date(System.currentTimeMillis() + 10*1000); //temp, for testing purposes!
+        if(artist.getStartTime() != null) {
+            Date startTime = artist.getStartTime();
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Calendar calendar =  Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+            //Date newDate = new Date(System.currentTimeMillis() + 10*1000); //temp, for testing purposes! //TODO: for testing, remove this line !
 
-        calendar.setTime(startTime); // notification time from artist date
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
 
-        String time =  Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE));
-        String stageName = artist.getLocation();
+            //calendar.setTime(newDate); //TODO: for testing, remove this line !
+            calendar.setTime(startTime); // notification time from artist date
+            calendar.add(Calendar.MINUTE, -10);//set alarm 10 minutes before starttime
 
-        long when = calendar.getTimeInMillis();
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        intent.setAction(INTENT_ACTION);
-        intent.putExtra(ArtistDetailActivity.NOTIFICATION_INFO, artist.getName() + " " + getString(R.string.starts_at) + " " + time + " " + getString(R.string.at_stage) + " " + stageName);
+            String time = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE));
+            String stageName = artist.getLocation();
 
-        //startService(intent);//temp
-        PendingIntent pi = PendingIntent.getBroadcast(this, artist.getId(),intent,PendingIntent.FLAG_ONE_SHOT);
+            long when = calendar.getTimeInMillis();
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            intent.setAction(INTENT_ACTION);
+            intent.putExtra(ArtistDetailActivity.NOTIFICATION_INFO, artist.getName() + " " + getString(R.string.starts_at) + " " + time + " " + getString(R.string.at_stage) + " " + stageName);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, when, pi);
+            PendingIntent pi = PendingIntent.getBroadcast(this, artist.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
+            alarmManager.set(AlarmManager.RTC_WAKEUP, when, pi);
+
+            //toast message
+            Toast.makeText(this, getString(R.string.reminder_on), Toast.LENGTH_SHORT).show();
+        }else{
+            Log.v(TAG,"could not set alarm for " + artist.getName() + " as it has no starttime");
+        }
     }
 
     //cancels reminder notification using AlarmManager for current artist
