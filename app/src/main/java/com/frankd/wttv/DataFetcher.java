@@ -189,9 +189,8 @@ public class DataFetcher {
                                                 if (obj.optJSONObject("links") != null) {
                                                     String newsItemUrl = obj.optJSONObject("links").optString("self");
                                                     if (newsItemUrl != null) {
-                                                        if(getNews(newsArrayList, news.getId()) == null) {
-                                                            fetchNewsItem(news, newsItemUrl, myDbHelper, context, mainApplication);
-                                                        }
+                                                        fetchNewsItem(news, newsItemUrl, myDbHelper, context, mainApplication);
+
                                                     }
                                                 }
                                             }
@@ -242,7 +241,7 @@ public class DataFetcher {
 
                             news.setTeaser(removeHtmlFromString(attributes.optString("teaser")));
                             news.setBody(removeHtmlFromString(attributes.optString("body")));
-                            if(attributes.optJSONObject("video") != null) {
+                            if (attributes.optJSONObject("video") != null) {
                                 news.setVideo(attributes.optJSONObject("video").optString("url"));
                             }
 
@@ -295,7 +294,6 @@ public class DataFetcher {
                         mainApplication.setArtistList(artists);
                         System.out.println("saved artist image!!");
                         mainApplication.removePendingRequest();
-
 
 
                     }
@@ -413,8 +411,9 @@ public class DataFetcher {
             if (artists.get(i).getId() == updatedArtist.getId()) {
                 artists.remove(i);
             }
-            artists.add(updatedArtist);
         }
+        artists.add(updatedArtist);
+
         Collections.sort(artists, new Comparator<Artist>() {
             @Override
             public int compare(Artist artist1, Artist artist2) {
