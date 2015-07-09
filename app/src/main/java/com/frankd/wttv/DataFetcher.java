@@ -412,8 +412,8 @@ public class DataFetcher {
         for (int i = 0; i < artists.size(); i++) {
             if (artists.get(i).getId() == updatedArtist.getId()) {
                 artists.remove(i);
-                artists.add(updatedArtist);
             }
+            artists.add(updatedArtist);
         }
         Collections.sort(artists, new Comparator<Artist>() {
             @Override
