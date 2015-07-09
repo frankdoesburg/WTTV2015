@@ -2,42 +2,20 @@ package com.frankd.wttv;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Application;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.SQLException;
-import android.net.http.AndroidHttpClient;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
@@ -95,7 +73,12 @@ public class MainActivity extends Activity {
             }
 
             public void onQueueNotEmpty() {
-                swipeRefreshLayout.setRefreshing(true);
+                swipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                    }
+                });
             }
         });
 

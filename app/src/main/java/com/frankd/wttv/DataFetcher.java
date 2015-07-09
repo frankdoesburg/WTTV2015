@@ -189,7 +189,9 @@ public class DataFetcher {
                                                 if (obj.optJSONObject("links") != null) {
                                                     String newsItemUrl = obj.optJSONObject("links").optString("self");
                                                     if (newsItemUrl != null) {
-                                                        fetchNewsItem(news, newsItemUrl, myDbHelper, context, mainApplication);
+                                                        if(getNews(newsArrayList, news.getId()) == null) {
+                                                            fetchNewsItem(news, newsItemUrl, myDbHelper, context, mainApplication);
+                                                        }
                                                     }
                                                 }
                                             }
