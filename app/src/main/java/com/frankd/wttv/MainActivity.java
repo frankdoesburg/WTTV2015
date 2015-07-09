@@ -11,6 +11,8 @@ import android.database.SQLException;
 import android.net.http.AndroidHttpClient;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -33,6 +35,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -47,14 +50,17 @@ public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     //action bar toggle
     private ActionBarDrawerToggle mDrawerToggle;
-    private RequestQueue mQueue;
     private MainListAdapter listAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private MainApplication application;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
 
         //set custom font to action bar
         SpannableString s = new SpannableString(getString(R.string.main_activity));
@@ -67,11 +73,34 @@ public class MainActivity extends Activity {
         actionBar.setTitle(s);
 
         //initialize news feed and listview
-        ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
+        application = (MainApplication)getApplication();
 
-        MainApplication application = (MainApplication)getApplication();
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.grid_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                application.refreshNews();
+            }
 
-        listAdapter = new MainListAdapter(this, application.getNewsList());
+        });
+
+        application.setRefreshDataListener(new MainApplication.RefreshDataListener() {
+            @Override
+            public void onQueueEmpty() {
+                application = (MainApplication)getApplication();
+                ArrayList<News> refreshedNews = new ArrayList<>(application.getNewsList());
+                listAdapter.refresh(refreshedNews);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            public void onQueueNotEmpty() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
+
+        ArrayList<News> news = application.getNewsList();
+        listAdapter = new MainListAdapter(this, news);
         listView.setAdapter(listAdapter);
         initMenuDrawer();
     }

@@ -17,7 +17,7 @@ import java.util.Date;
  * Created by FrankD on 7-7-2015.
  */
 //used to set all alarms which are lost after a reboot
-public class AlarmSetter extends BroadcastReceiver {
+public class  AlarmSetter extends BroadcastReceiver {
     private static final String TAG = "AlarmReceiver";
     private final String INTENT_ACTION = "INTENT_ACTION";
 

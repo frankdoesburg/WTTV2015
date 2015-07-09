@@ -40,11 +40,13 @@ public class ArtistListActivity extends Activity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private ArtistListAdapter adapter;
     private GridView artistGrid;
+    private MainApplication application;
     private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.artist_list_layout);
 
         //allow backward navigation to parent activity via actionbar
@@ -57,24 +59,37 @@ public class ArtistListActivity extends Activity {
         // Update the action bar title with the TypefaceSpan instance
         ActionBar actionBar = getActionBar();
         actionBar.setTitle(s);
-
-        //get artist list from database
-        artistList = getArtists();
+        application = (MainApplication) getApplication();
+        artistList = application.getArtists();
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.grid_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshArtists();
+
+                application.refreshArtists();
             }
         });
         SegmentedGroup segmentedGroup = (SegmentedGroup) findViewById(R.id.segmented_control);
         segmentedGroup.setTintColor(Color.parseColor("#333333"), Color.parseColor("#ffffff"));
 
+        application.setRefreshDataListener(new MainApplication.RefreshDataListener() {
+            @Override
+            public void onQueueEmpty() {
+                ArrayList<Artist> newArtists = new ArrayList<>(application.getArtists());
+
+                adapter.refresh(newArtists);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            public void onQueueNotEmpty() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
+
         artistGrid = (GridView) findViewById(R.id.gridView);
         adapter = new ArtistListAdapter(this, artistList);
         artistGrid.setAdapter(adapter);
-        context = this;
 
         initMenuDrawer();
 
@@ -83,21 +98,6 @@ public class ArtistListActivity extends Activity {
 
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
-    public ArrayList<Artist> getArtists() {
-        MainApplication mainApplication = (MainApplication) getApplication();
-        return mainApplication.getArtists();
-    }
-
-    public void refreshArtists() {
-        MainApplication mainApplication = (MainApplication) getApplication();
-        DataBaseHelper myDbHelper = mainApplication.getDatabaseHelper();
-
-        DataFetcher dataFetcher = new DataFetcher();
-        dataFetcher.getDataFromServer(this, myDbHelper, artistList, mainApplication);
-        swipeRefreshLayout.setRefreshing(false);
-
     }
 
     public void onRadioButtonClicked(View view) {
