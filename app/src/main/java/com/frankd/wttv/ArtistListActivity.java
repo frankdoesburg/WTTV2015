@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.SQLException;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,7 +18,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import info.hoang8f.android.segmented.SegmentedGroup;

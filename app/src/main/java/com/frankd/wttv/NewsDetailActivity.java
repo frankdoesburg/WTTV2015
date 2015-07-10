@@ -10,13 +10,9 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
