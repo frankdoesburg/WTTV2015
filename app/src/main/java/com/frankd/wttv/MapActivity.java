@@ -64,6 +64,9 @@ public class MapActivity extends Activity {
         //set timetable image
         SubsamplingScaleImageView imgView = (SubsamplingScaleImageView)findViewById(R.id.imageView);
         imgView.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP);
+        imgView.setMinimumDpi(160);
+        imgView.setDoubleTapZoomDpi(200);
+        imgView.setMinimumTileDpi(160);
         imgView.setImage(ImageSource.asset("plattegrond.jpg"), new ImageViewState(0, new PointF(0, 0), SubsamplingScaleImageView.ORIENTATION_0));
 
 
