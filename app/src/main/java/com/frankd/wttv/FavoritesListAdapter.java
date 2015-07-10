@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -26,7 +28,7 @@ import java.util.Random;
  * Created by FrankD on 5-7-2015.
  */
 public class FavoritesListAdapter extends ArrayAdapter {
-
+    private static final String TAG = "FavoritesListAdapter";
     private Context context;
     private ArrayList<Artist> favorites;
     private ImageLoader imageLoader = ImageLoader.getInstance();
@@ -101,10 +103,16 @@ public class FavoritesListAdapter extends ArrayAdapter {
 
     //returns true if starttime of act is in the past
     public boolean actStarttimeInPast(Artist artist){
-        
         Date curdate = new Date(System.currentTimeMillis());
 
         Date artistDate = artist.getStartTime();
+
+        Calendar calendar =  Calendar.getInstance();
+        calendar.setTime(curdate);
+        Log.v(TAG, "Current Time year: " + Integer.toString(calendar.get(Calendar.YEAR)) + " month " + Integer.toString(calendar.get(Calendar.MONTH)) + " day " + Integer.toString(calendar.get(Calendar.DATE)) + " hour of day " + Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE)));
+        calendar.setTime(artistDate);
+        Log.v(TAG, "Artist alarm Time year: " + Integer.toString(calendar.get(Calendar.YEAR)) + " month " + Integer.toString(calendar.get(Calendar.MONTH)) + " day " + Integer.toString(calendar.get(Calendar.DATE)) + " hour of day " + Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE)));
+
 
         if(artistDate == null){
             return false;

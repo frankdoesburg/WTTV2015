@@ -18,13 +18,13 @@ import java.util.Date;
  */
 //used to set all alarms which are lost after a reboot
 public class  AlarmSetter extends BroadcastReceiver {
-    private static final String TAG = "AlarmReceiver";
+    private static final String TAG = "AlarmSetter";
     private final String INTENT_ACTION = "INTENT_ACTION";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         //set alarms for favorite artists
-        Log.v(TAG,"AlarmSetter active after device reboot");
+        Log.v(TAG,"AlarmSetter active after device reboot or app update");
         ArrayList<Artist> favorites = findFavoritesInDB(context);
         setAlarmsForFavorites(context,favorites);
     }
@@ -35,25 +35,45 @@ public class  AlarmSetter extends BroadcastReceiver {
             for(Artist artist : favorites){
 
                 Log.v(TAG, "setting alarm for " + artist.getName());
+
                 Date startTime = artist.getStartTime();
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                Calendar calendar =  Calendar.getInstance();
 
-                calendar.setTime(startTime); // notification time from artist date
-                calendar.add(Calendar.MINUTE,-10);//set alarm 10 minutes before starttime
+                if(startTime != null && isInFuture(startTime)) {
+                    Log.v(TAG,"artist " + artist.getName() + " starttime is in the future. Setting alarm");
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    Calendar calendar = Calendar.getInstance();
 
-                String time =  Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE));
-                String stageName = artist.getLocation();
+                    calendar.setTime(startTime); // notification time from artist date
+                    String time = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE));
+                    String stageName = artist.getLocation();
+                    calendar.add(Calendar.MINUTE, -10);//set alarm 10 minutes before starttime
 
-                long when = calendar.getTimeInMillis();
-                Intent intent = new Intent(context, AlarmReceiver.class);
-                intent.setAction(INTENT_ACTION);
-                intent.putExtra(ArtistDetailActivity.NOTIFICATION_INFO, artist.getName() + " " + context.getString(R.string.starts_at) + " " + time + " " + context.getString(R.string.at_stage) + " " + stageName);
+                    Log.v(TAG, "Alarm Time year: " + Integer.toString(calendar.get(Calendar.YEAR)) + " month " + Integer.toString(calendar.get(Calendar.MONTH)) + " day " + Integer.toString(calendar.get(Calendar.DATE)) + " hour of day " + Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE)));
 
-                PendingIntent pi = PendingIntent.getBroadcast(context, artist.getId(),intent,PendingIntent.FLAG_CANCEL_CURRENT);
+                    long when = calendar.getTimeInMillis();
+                    Intent intent = new Intent(context, AlarmReceiver.class);
+                    intent.setAction(INTENT_ACTION);
+                    intent.putExtra(ArtistDetailActivity.NOTIFICATION_INFO, artist.getName() + " " + context.getString(R.string.starts_at) + " " + time + " " + context.getString(R.string.at_stage) + " " + stageName);
 
-                alarmManager.set(AlarmManager.RTC_WAKEUP, when, pi);
+                    PendingIntent pi = PendingIntent.getBroadcast(context, artist.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, when, pi);
+                }else{
+                    Log.v(TAG,"artist " + artist.getName() + " starttime is in the past. Not setting alarm");
+                }
             }
+        }
+    }
+
+    public boolean isInFuture(Date date){
+        Date curDate = new Date(System.currentTimeMillis());
+
+        if(date.compareTo(curDate) == 0){ //date is the same as current time
+            return false;
+        }else if(date.compareTo(curDate) == -1){ //date is in the past
+            return false;
+        }else { //date is in the future
+            return true;
         }
     }
 

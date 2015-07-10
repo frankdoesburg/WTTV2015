@@ -68,7 +68,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
                 <data android:scheme="package" android:path="com.frankd.wttv" />
-        </intent-filter>
+            </intent-filter>
         </receiver>
     </application>
 
