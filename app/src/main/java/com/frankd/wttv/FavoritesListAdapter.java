@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +29,8 @@ public class FavoritesListAdapter extends ArrayAdapter {
 
     private Context context;
     private ArrayList<Artist> favorites;
+    private ImageLoader imageLoader = ImageLoader.getInstance();
+
 
     public FavoritesListAdapter(Context context, ArrayList<Artist> favorites) {
         super(context,R.layout.favorites_list_item,favorites);
@@ -48,7 +52,9 @@ public class FavoritesListAdapter extends ArrayAdapter {
         //set imageview and scale the image making the width 50% of the screen size
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
 
-        imageView.setImageBitmap(getImageFromBase64Blob(curArtist.getThumbnailImageBlob()));
+//        imageView.setImageBitmap(getImageFromBase64Blob(curArtist.getThumbnailImageBlob()));
+        imageLoader.displayImage("db://" + curArtist.getId(), imageView);
+
 
         TextView artistNameTV = (TextView) convertView.findViewById(R.id.artistNameTV);
         TextView timeDayTV = (TextView) convertView.findViewById(R.id.timeDayTV);
