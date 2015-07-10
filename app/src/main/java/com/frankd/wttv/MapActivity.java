@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PointF;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -106,6 +107,7 @@ public class MapActivity extends Activity {
         LinearLayout timetable = (LinearLayout) findViewById(R.id.timetable);
         LinearLayout map = (LinearLayout) findViewById(R.id.map);
         LinearLayout favorites = (LinearLayout) findViewById(R.id.favorites);
+        LinearLayout appothekers = (LinearLayout) findViewById(R.id.appothekers);
 
         //set the current activity as selected
         map.setSelected(true);
@@ -113,7 +115,7 @@ public class MapActivity extends Activity {
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -145,6 +147,15 @@ public class MapActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),FavoritesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        appothekers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("http://deappothekers.nl/");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
         });

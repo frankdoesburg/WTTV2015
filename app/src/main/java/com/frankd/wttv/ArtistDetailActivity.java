@@ -106,11 +106,7 @@ public class ArtistDetailActivity extends Activity {
             descriptionTV.setText(artist.getDescription());
 
             //set heart icon based on artist being favorite
-            if(artist.isFavorite()){
-                favoriteButton.setImageResource(R.drawable.heart_closed);
-            }else{
-                favoriteButton.setImageResource(R.drawable.heart_open);
-            }
+            setHeartIcon(artist.isFavorite());
 
 
         }catch (Exception E){
@@ -162,11 +158,7 @@ public class ArtistDetailActivity extends Activity {
     @Override
     public void onResume(){
         //set heart icon based on artist being favorite
-        if(artist.isFavorite()){
-            favoriteButton.setImageResource(R.drawable.heart_closed);
-        }else{
-            favoriteButton.setImageResource(R.drawable.heart_open);
-        }
+        setHeartIcon(artist.isFavorite());
 
         super.onResume();
     }
@@ -231,6 +223,8 @@ public class ArtistDetailActivity extends Activity {
             calendar.add(Calendar.MINUTE, -10);//set alarm 10 minutes before starttime
 
             String time = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE));
+            Log.v(TAG,"Alarm Time: month " + Integer.toString(calendar.get(Calendar.MONTH)) + " day of week " + Integer.toString(calendar.get(Calendar.DAY_OF_WEEK)) + " hour of day " + Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE)));
+
             String stageName = artist.getLocation();
 
             long when = calendar.getTimeInMillis();

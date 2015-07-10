@@ -136,31 +136,52 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/favorites"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/menudrawer_selector"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp">
+            android:id="@+id/favorites"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/menudrawer_selector"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginRight="@dimen/menu_drawer_between_image_text"
-                    android:src="@drawable/heart_open" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                android:src="@drawable/heart_open" />
 
-                <TextView
-                    android:id="@+id/favoritesTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Favorieten"
-                    fontPath="fonts/Oswald-Light.ttf"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/textColor"
-                    />
+            <TextView
+                android:id="@+id/favoritesTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Favorieten"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/textColor"
+                />
 
-            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/appothekers"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/menudrawer_selector"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/appothekersTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appothekers"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/textColor"
+                />
+
+        </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
