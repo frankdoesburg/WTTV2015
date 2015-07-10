@@ -23,6 +23,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by FrankD on 8-6-2015.
@@ -407,6 +409,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
 
         Log.d("getAllNewssFromDB()", "loaded");
+
+        Collections.sort(newsArrayList, new Comparator<News>() {
+            @Override
+            public int compare(News news1, News news2) {
+                return Double.compare(news2.getId(), news1.getId());
+            }
+        });
 
         return newsArrayList;
     }

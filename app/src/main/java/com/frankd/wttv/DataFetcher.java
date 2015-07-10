@@ -446,7 +446,7 @@ public class DataFetcher {
             @Override
             public int compare(News news1, News news2) {
 
-                return news1.getDatePublish().compareTo(news2.getDatePublish());
+                return Double.compare(news2.getId(), news1.getId());
             }
         });
         return newsList;
