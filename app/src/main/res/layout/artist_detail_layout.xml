@@ -90,12 +90,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/favoriteButton"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/activity_horizontal_margin"
                 android:text="text"
                 fontPath="fonts/Oswald-Light.ttf"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                />
+            <TextView
+                android:id="@+id/videoLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/descriptionTV"
+                android:linksClickable="true"
+                android:autoLink="web"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="0dp"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue_dark"
                 />
         </RelativeLayout>
     </ScrollView>
