@@ -2,40 +2,25 @@ package com.frankd.wttv;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Application;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.SQLException;
 import android.net.Uri;
-import android.net.http.AndroidHttpClient;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import java.util.ArrayList;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
@@ -48,14 +33,17 @@ public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     //action bar toggle
     private ActionBarDrawerToggle mDrawerToggle;
-    private RequestQueue mQueue;
     private MainListAdapter listAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private MainApplication application;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
 
         //set custom font to action bar
         SpannableString s = new SpannableString(getString(R.string.main_activity));
@@ -68,13 +56,49 @@ public class MainActivity extends Activity {
         actionBar.setTitle(s);
 
         //initialize news feed and listview
-        ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
+        application = (MainApplication)getApplication();
 
-        MainApplication application = (MainApplication)getApplication();
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.grid_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                application.refreshNews();
+            }
 
-        listAdapter = new MainListAdapter(this, application.getNewsList());
+        });
+
+        application.setRefreshDataListener(new MainApplication.RefreshDataListener() {
+            @Override
+            public void onQueueEmpty() {
+                application = (MainApplication)getApplication();
+                ArrayList<News> refreshedNews = new ArrayList<>(application.getNewsList());
+                listAdapter.refresh(refreshedNews);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            public void onQueueNotEmpty() {
+                if(!swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            swipeRefreshLayout.setRefreshing(true);
+                        }
+                    });
+                }
+            }
+        });
+
+        ArrayList<News> news = application.getNewsList();
+        listAdapter = new MainListAdapter(this, news);
         listView.setAdapter(listAdapter);
         initMenuDrawer();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("PREFS", 0);
+        if(sharedPreferences.getBoolean("firstStartUpNews", true)) {
+            Toast.makeText(this, "Pull to refresh nieuws", Toast.LENGTH_LONG).show();
+            sharedPreferences.edit().putBoolean("firstStartUpNews", false).commit();
+        }
     }
 
     @Override

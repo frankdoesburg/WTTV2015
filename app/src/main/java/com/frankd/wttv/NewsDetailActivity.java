@@ -10,13 +10,9 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -48,6 +44,7 @@ public class NewsDetailActivity extends Activity {
         TextView teaser = (TextView) findViewById(R.id.newsDetailTeaser);
         ImageView image = (ImageView) findViewById(R.id.newsDetailImageView);
         TextView body = (TextView) findViewById(R.id.newsDetailBody);
+        TextView link = (TextView) findViewById(R.id.videoLink);
 
         try{
             Intent intent = getIntent();
@@ -57,6 +54,7 @@ public class NewsDetailActivity extends Activity {
             title.setText(news.getTitle());
             teaser.setText(news.getTeaser());
             body.setText(news.getBody());
+            link.setText(news.getVideo());
 
 
         }catch (Exception E){

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -64,6 +65,7 @@ public class ArtistDetailActivity extends Activity {
         TextView artistNameTV = (TextView) findViewById(R.id.artistNameTV);
         TextView descriptionTV = (TextView) findViewById(R.id.descriptionTV);
         TextView timeDayTV = (TextView) findViewById(R.id.timeDayTV);
+        TextView linkView = (TextView) findViewById(R.id.videoLink);
 
 
         //get screen width and size the imageview accordingly
@@ -104,6 +106,7 @@ public class ArtistDetailActivity extends Activity {
             }
             timeDayTV.setText(artist.getDay() + " " + startTime + location);
             descriptionTV.setText(artist.getDescription());
+            linkView.setText(artist.getYoutubeLink());
 
             //set heart icon based on artist being favorite
             setHeartIcon(artist.isFavorite());
@@ -165,6 +168,8 @@ public class ArtistDetailActivity extends Activity {
 
     //set heart icon and update artist favorite status
     public void toggleFavorite(){
+        //update heart icon
+        setHeartIcon(artist.isFavorite());
 
         if(artist.isFavorite()){
             //un-favorite arist
@@ -183,8 +188,6 @@ public class ArtistDetailActivity extends Activity {
              setFavorite(artist.getId(), true);
         }
 
-        //update heart icon
-        setHeartIcon(artist.isFavorite());
     }
 
     //sets the artist favorite status in DB and in central arrayList

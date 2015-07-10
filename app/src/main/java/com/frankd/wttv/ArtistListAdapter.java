@@ -164,6 +164,10 @@ public class ArtistListAdapter extends ArrayAdapter {
             notifyDataSetChanged();
         }
 
-
+    }
+    public void refresh(ArrayList<Artist> newArtists){
+        this.artists.clear();
+        this.artists.addAll(newArtists);
+        notifyDataSetChanged();
     }
 }

@@ -21,6 +21,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="10dp">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="10dp"
             android:padding="10dp"
@@ -46,9 +53,10 @@
 
             <ImageView
                 android:id="@+id/newsDetailImageView"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="centerInside" />
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
 
             <TextView
             android:id="@+id/newsDetailBody"
@@ -59,6 +67,18 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/gray_black" />
 
+            <TextView
+                android:id="@+id/videoLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:linksClickable="true"
+                android:autoLink="web"
+                fontPath="fonts/Oswald-Light.ttf"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue_dark"
+                />
+
+        </LinearLayout>
         </LinearLayout>
 
 

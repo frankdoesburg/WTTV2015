@@ -32,7 +32,7 @@ public class DataFetcher {
 
     public void getDataFromServer(final Context context, final DataBaseHelper myDbHelper, final ArrayList<Artist> artists, final MainApplication mainApplication) {
         String url = "http://welcometothevillage.nl/json/acts";
-
+        mainApplication.addPendingRequest();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -121,18 +121,21 @@ public class DataFetcher {
                                         artistArrayList = updateArtist(artist, artistArrayList);
                                     }
 
-
                                 } catch (JSONException e) {
                                     Log.d("JSON", "Could not fetch JSON element 'object'");
                                     e.printStackTrace();
+
                                 }
                             }
                             // return artists
                             mainApplication.setArtistList(artists);
+                            mainApplication.removePendingRequest();
+
 
                         } catch (JSONException e) {
                             Log.d("JSON", "Could not fetch JSON element 'data'");
                             e.printStackTrace();
+                            mainApplication.removePendingRequest();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -140,6 +143,8 @@ public class DataFetcher {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
+                        mainApplication.removePendingRequest();
+
 
                     }
                 });
@@ -149,6 +154,7 @@ public class DataFetcher {
 
     public void getNewsFromServer(final Context context, final DataBaseHelper myDbHelper, final ArrayList<News> newsArrayList, final MainApplication mainApplication) {
         String url = "http://welcometothevillage.nl/json/nieuws";
+        mainApplication.addPendingRequest();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -184,6 +190,7 @@ public class DataFetcher {
                                                     String newsItemUrl = obj.optJSONObject("links").optString("self");
                                                     if (newsItemUrl != null) {
                                                         fetchNewsItem(news, newsItemUrl, myDbHelper, context, mainApplication);
+
                                                     }
                                                 }
                                             }
@@ -198,10 +205,13 @@ public class DataFetcher {
                                 }
                             }
 
+                            mainApplication.removePendingRequest();
 
                         } catch (JSONException e) {
                             Log.d("JSON", "Could not fetch JSON element 'data'");
                             e.printStackTrace();
+                            mainApplication.removePendingRequest();
+
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -209,6 +219,7 @@ public class DataFetcher {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
+                        mainApplication.removePendingRequest();
 
                     }
                 });
@@ -217,6 +228,7 @@ public class DataFetcher {
     }
 
     private void fetchNewsItem(final News news, String newsItemUrl, final DataBaseHelper myDbHelper, final Context context, final MainApplication mainApplication) {
+        mainApplication.addPendingRequest();
         JsonObjectRequest jsNewsItemObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, newsItemUrl, null, new Response.Listener<JSONObject>() {
 
@@ -229,7 +241,7 @@ public class DataFetcher {
 
                             news.setTeaser(removeHtmlFromString(attributes.optString("teaser")));
                             news.setBody(removeHtmlFromString(attributes.optString("body")));
-                            if(attributes.optJSONObject("video") != null) {
+                            if (attributes.optJSONObject("video") != null) {
                                 news.setVideo(attributes.optJSONObject("video").optString("url"));
                             }
 
@@ -240,8 +252,7 @@ public class DataFetcher {
                             myDbHelper.insertNews(news);
                             ArrayList<News> newsArrayList = updateNews(news, mainApplication.getNewsList());
                             mainApplication.setNewsList(newsArrayList);
-
-
+                            mainApplication.removePendingRequest();
 
                         } catch (JSONException e) {
                             Log.d("JSON", "Could not fetch JSON element 'data'");
@@ -252,7 +263,7 @@ public class DataFetcher {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
+                        mainApplication.removePendingRequest();
 
                     }
                 });
@@ -271,7 +282,7 @@ public class DataFetcher {
         String urlStringLarge = url.replaceAll("/[\\d]{3}x[\\d]{3}", "/" + "600x400");
         urlString = urlString.replaceAll("\\s", "%20");
         urlStringLarge = urlStringLarge.replaceAll("\\s", "%20");
-
+        mainApplication.addPendingRequest();
         ImageRequest request = new ImageRequest(urlString,
                 new Response.Listener<Bitmap>() {
                     @Override
@@ -282,17 +293,20 @@ public class DataFetcher {
                         ArrayList<Artist> artists = updateArtist(artist, mainApplication.getArtists());
                         mainApplication.setArtistList(artists);
                         System.out.println("saved artist image!!");
+                        mainApplication.removePendingRequest();
 
 
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
+                        mainApplication.removePendingRequest();
 
                     }
                 });
         MySingleton.getInstance(context).addToRequestQueue(request);
 
+        mainApplication.addPendingRequest();
         request = new ImageRequest(urlStringLarge,
                 new Response.Listener<Bitmap>() {
                     @Override
@@ -303,11 +317,14 @@ public class DataFetcher {
                         ArrayList<Artist> artists = updateArtist(artist, mainApplication.getArtists());
                         mainApplication.setArtistList(artists);
                         System.out.println("saved large artist image!!!!");
+                        mainApplication.removePendingRequest();
+
 
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
+                        mainApplication.removePendingRequest();
 
                     }
                 });
@@ -321,6 +338,7 @@ public class DataFetcher {
         urlString = urlString.replaceAll("\\s", "%20");
         urlStringLarge = urlStringLarge.replaceAll("\\s", "%20");
 
+        mainApplication.addPendingRequest();
         ImageRequest request = new ImageRequest(urlString,
                 new Response.Listener<Bitmap>() {
                     @Override
@@ -331,17 +349,20 @@ public class DataFetcher {
                         ArrayList<News> newsArrayList = updateNews(news, mainApplication.getNewsList());
                         mainApplication.setNewsList(newsArrayList);
                         System.out.println("saved news image!!");
+                        mainApplication.removePendingRequest();
 
 
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
+                        mainApplication.removePendingRequest();
 
                     }
                 });
         MySingleton.getInstance(context).addToRequestQueue(request);
 
+        mainApplication.addPendingRequest();
         request = new ImageRequest(urlStringLarge,
                 new Response.Listener<Bitmap>() {
                     @Override
@@ -352,11 +373,14 @@ public class DataFetcher {
                         ArrayList<News> newsArrayList = updateNews(news, mainApplication.getNewsList());
                         mainApplication.setNewsList(newsArrayList);
                         System.out.println("saved large news image!!!!");
+                        mainApplication.removePendingRequest();
+
 
                     }
                 }, 0, 0, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
+                        mainApplication.removePendingRequest();
 
                     }
                 });
@@ -386,9 +410,10 @@ public class DataFetcher {
         for (int i = 0; i < artists.size(); i++) {
             if (artists.get(i).getId() == updatedArtist.getId()) {
                 artists.remove(i);
-                artists.add(updatedArtist);
             }
         }
+        artists.add(updatedArtist);
+
         Collections.sort(artists, new Comparator<Artist>() {
             @Override
             public int compare(Artist artist1, Artist artist2) {
@@ -413,9 +438,10 @@ public class DataFetcher {
         for (int i = 0; i < newsList.size(); i++) {
             if (newsList.get(i).getId() == updatedNews.getId()) {
                 newsList.remove(i);
-                newsList.add(updatedNews);
             }
         }
+        newsList.add(updatedNews);
+
         Collections.sort(newsList, new Comparator<News>() {
             @Override
             public int compare(News news1, News news2) {
