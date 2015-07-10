@@ -83,7 +83,9 @@ public class ArtistListActivity extends Activity {
             }
 
             public void onQueueNotEmpty() {
-                swipeRefreshLayout.setRefreshing(true);
+                if(!swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(true);
+                }
             }
         });
 
