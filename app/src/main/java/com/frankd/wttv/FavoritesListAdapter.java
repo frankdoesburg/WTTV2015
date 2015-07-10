@@ -107,13 +107,6 @@ public class FavoritesListAdapter extends ArrayAdapter {
 
         Date artistDate = artist.getStartTime();
 
-        Calendar calendar =  Calendar.getInstance();
-        calendar.setTime(curdate);
-        Log.v(TAG, "Current Time year: " + Integer.toString(calendar.get(Calendar.YEAR)) + " month " + Integer.toString(calendar.get(Calendar.MONTH)) + " day " + Integer.toString(calendar.get(Calendar.DATE)) + " hour of day " + Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE)));
-        calendar.setTime(artistDate);
-        Log.v(TAG, "Artist alarm Time year: " + Integer.toString(calendar.get(Calendar.YEAR)) + " month " + Integer.toString(calendar.get(Calendar.MONTH)) + " day " + Integer.toString(calendar.get(Calendar.DATE)) + " hour of day " + Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE)));
-
-
         if(artistDate == null){
             return false;
         }
