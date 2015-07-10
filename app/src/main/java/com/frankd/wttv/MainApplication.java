@@ -55,8 +55,8 @@ public class MainApplication extends Application {
         dataFetcher = new DataFetcher();
         newsList = mDbHelper.getAllNewsFromDB();
         artistList = mDbHelper.getAllArtistsFromDB();
-        dataFetcher.getDataFromServer(this, mDbHelper, artistList, this);
-        dataFetcher.getNewsFromServer(this, mDbHelper, newsList, this);
+//        dataFetcher.getDataFromServer(this, mDbHelper, artistList, this);
+//        dataFetcher.getNewsFromServer(this, mDbHelper, newsList, this);
 
         //Config for async image loader
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)

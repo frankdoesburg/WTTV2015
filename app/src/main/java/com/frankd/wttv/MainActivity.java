@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
@@ -88,6 +91,12 @@ public class MainActivity extends Activity {
         listAdapter = new MainListAdapter(this, news);
         listView.setAdapter(listAdapter);
         initMenuDrawer();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("PREFS", 0);
+        if(sharedPreferences.getBoolean("firstStartUpNews", true)) {
+            Toast.makeText(this, "Pull to refresh nieuws", Toast.LENGTH_LONG).show();
+            sharedPreferences.edit().putBoolean("firstStartUpNews", false).commit();
+        }
     }
 
     @Override
