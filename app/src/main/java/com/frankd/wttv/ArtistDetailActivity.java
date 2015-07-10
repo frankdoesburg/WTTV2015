@@ -168,13 +168,14 @@ public class ArtistDetailActivity extends Activity {
 
     //set heart icon and update artist favorite status
     public void toggleFavorite(){
-        //update heart icon
-        setHeartIcon(artist.isFavorite());
+
 
         if(artist.isFavorite()){
             //un-favorite arist
             //locally
             artist.setFavorite(false);
+            //update heart icon
+            setHeartIcon(artist.isFavorite());
 
             //in database and then in central arraylist
             setFavorite(artist.getId(), false);
@@ -183,6 +184,8 @@ public class ArtistDetailActivity extends Activity {
             //make artist favorite
             //locally
             artist.setFavorite(true);
+            //update heart icon
+            setHeartIcon(artist.isFavorite());
 
             //and in database and then in central arraylist
              setFavorite(artist.getId(), true);
@@ -226,7 +229,7 @@ public class ArtistDetailActivity extends Activity {
             calendar.add(Calendar.MINUTE, -10);//set alarm 10 minutes before starttime
 
             String time = Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE));
-            Log.v(TAG,"Alarm Time: month " + Integer.toString(calendar.get(Calendar.MONTH)) + " day of week " + Integer.toString(calendar.get(Calendar.DAY_OF_WEEK)) + " hour of day " + Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE)));
+            Log.v(TAG,"Alarm Time: month " + Integer.toString(calendar.get(Calendar.MONTH)) + " day " + Integer.toString(calendar.get(Calendar.DATE)) + " hour of day " + Integer.toString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" + Integer.toString(calendar.get(Calendar.MINUTE)));
 
             String stageName = artist.getLocation();
 

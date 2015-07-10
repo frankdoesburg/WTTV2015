@@ -12,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by FrankD on 5-7-2015.
@@ -38,6 +41,7 @@ public class FavoritesListAdapter extends ArrayAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.favorites_list_item, parent, false);
         }
+
         //get artist info
         Artist curArtist = favorites.get(position);
 
@@ -68,13 +72,46 @@ public class FavoritesListAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 int ID = v.getId();
-                Intent intent = new Intent(context.getApplicationContext(),ArtistDetailActivity.class);
-                intent.putExtra("ID",ID);
+                Intent intent = new Intent(context.getApplicationContext(), ArtistDetailActivity.class);
+                intent.putExtra("ID", ID);
                 context.startActivity(intent);
             }
         });
 
+        RelativeLayout baseLayout = (RelativeLayout) convertView.findViewById(R.id.baseLayout);
+        RelativeLayout overlay = (RelativeLayout) convertView.findViewById(R.id.overlay);
+
+        //add overlay if act is in the past
+        if(actStarttimeInPast(curArtist)){
+            baseLayout.setBackgroundResource(0);
+            overlay.setVisibility(View.VISIBLE);
+        }else{
+            baseLayout.setBackgroundResource(R.color.whiteTransparent);
+            overlay.setVisibility(View.INVISIBLE);
+        }
+
         return convertView;
+    }
+
+    //returns true if starttime of act is in the past
+    public boolean actStarttimeInPast(Artist artist){
+        
+        Date curdate = new Date(System.currentTimeMillis());
+
+        Date artistDate = artist.getStartTime();
+
+        if(artistDate == null){
+            return false;
+        }
+        //dates are equal
+        if(artistDate.compareTo(curdate)==0){
+            return false;
+            //artist startdate is before curdate (act is in the past)
+        }else if(artistDate.compareTo(curdate)==-1){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public Bitmap getImageFromBase64Blob(byte[] blob){

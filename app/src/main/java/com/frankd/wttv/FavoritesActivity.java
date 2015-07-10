@@ -11,16 +11,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -62,6 +59,7 @@ public class FavoritesActivity extends Activity {
     @Override
     public void onResume(){
         ArrayList<Artist> favorites = getFavorites();
+        favorites = sortFavoritesByDate(favorites); //sort artists by date
         FavoritesListAdapter adapter = new FavoritesListAdapter(this,favorites);
         listView.setAdapter(adapter);
 
@@ -77,6 +75,26 @@ public class FavoritesActivity extends Activity {
         }
 
         super.onResume();
+    }
+
+    public ArrayList<Artist> sortFavoritesByDate(ArrayList<Artist> artists){
+        Collections.sort(artists, new Comparator<Artist>() {
+            @Override
+            public int compare(Artist artist1, Artist artist2) {
+                try {
+                    return artist1.getStartTime().compareTo(artist2.getStartTime());
+                } catch (NullPointerException e) {
+                    if (artist1.getStartTime() == null && artist2.getStartTime() == null) {
+                        return 0;
+                    } else if (artist1.getStartTime() == null) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            }
+        });
+        return artists;
     }
 
     public ArrayList<Artist> getFavorites(){
