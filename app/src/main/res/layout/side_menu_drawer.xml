@@ -1,189 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingPrefix"
     android:id="@+id/left_drawer"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@color/actionbar_background">
+    android:background="@color/actionbar_background"
+    tools:ignore="MissingPrefix">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/menuItems"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="fill_parent">
 
-        <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="60dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/logoImageView"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/logo_big" />
-
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/news"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="60dp"
-                android:background="@drawable/menudrawer_selector"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginRight="@dimen/menu_drawer_between_image_text"
-                    android:src="@drawable/newspaper" />
+                    android:id="@+id/logoImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/logo_big" />
 
-                <TextView
-                    android:id="@+id/newsTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nieuws"
-                    fontPath="fonts/Oswald-Light.ttf"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/textColor"
-                    />
 
+                <LinearLayout
+                    android:id="@+id/news"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/menudrawer_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/newspaper" />
+
+                    <TextView
+                        android:id="@+id/newsTV"
+                        fontPath="fonts/Oswald-Light.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nieuws"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/textColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/artists"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/menudrawer_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/music" />
+
+                    <TextView
+                        android:id="@+id/artistTV"
+                        fontPath="fonts/Oswald-Light.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Acts"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/textColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/timetable"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/menudrawer_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/tasks" />
+
+                    <TextView
+                        android:id="@+id/timetableTV"
+                        fontPath="fonts/Oswald-Light.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Blokkenschema"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/textColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/menudrawer_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/map_marker" />
+
+                    <TextView
+                        android:id="@+id/mapTV"
+                        fontPath="fonts/Oswald-Light.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Plattegrond"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/textColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/favorites"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/menudrawer_selector"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginRight="@dimen/menu_drawer_between_image_text"
+                        android:src="@drawable/heart_open" />
+
+                    <TextView
+                        android:id="@+id/favoritesTV"
+                        fontPath="fonts/Oswald-Light.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Favorieten"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/textColor" />
+
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/artists"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/menudrawer_selector"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp">
+        </ScrollView>
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginRight="@dimen/menu_drawer_between_image_text"
-                    android:src="@drawable/music" />
+    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/artistTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Acts"
-                    fontPath="fonts/Oswald-Light.ttf"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/textColor"
-                    />
 
-            </LinearLayout>
+    <LinearLayout
+        android:id="@+id/appothekers"
+        android:layout_height="60dp"
+        android:layout_width="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/menuItems"
+        android:layout_alignStart="@+id/menuItems"
+        android:layout_alignEnd="@+id/menuItems"
+        android:layout_alignRight="@+id/menuItems"
+        android:background="@drawable/menudrawer_selector"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
+        <TextView
+            android:id="@+id/appothekersTV"
+            fontPath="fonts/Oswald-Light.ttf"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/appothekers"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/textColor"
+            android:layout_gravity="center"
+            android:gravity="center" />
 
-            <LinearLayout
-                android:id="@+id/timetable"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/menudrawer_selector"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginRight="@dimen/menu_drawer_between_image_text"
-                    android:src="@drawable/tasks" />
-
-                <TextView
-                    android:id="@+id/timetableTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Blokkenschema"
-                    fontPath="fonts/Oswald-Light.ttf"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/textColor"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/map"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/menudrawer_selector"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginRight="@dimen/menu_drawer_between_image_text"
-                    android:src="@drawable/map_marker" />
-
-                <TextView
-                    android:id="@+id/mapTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Plattegrond"
-                    fontPath="fonts/Oswald-Light.ttf"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/textColor"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-            android:id="@+id/favorites"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/menudrawer_selector"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginRight="@dimen/menu_drawer_between_image_text"
-                android:src="@drawable/heart_open" />
-
-            <TextView
-                android:id="@+id/favoritesTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Favorieten"
-                fontPath="fonts/Oswald-Light.ttf"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/textColor"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/appothekers"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@drawable/menudrawer_selector"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/appothekersTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/appothekers"
-                fontPath="fonts/Oswald-Light.ttf"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/textColor"
-                />
-
-        </LinearLayout>
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
 </RelativeLayout>
