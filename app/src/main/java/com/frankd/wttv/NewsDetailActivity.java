@@ -11,6 +11,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,11 +23,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class NewsDetailActivity extends Activity {
     private static final String TAG = "NewsDetailActivity";
     private News news;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_detail_layout);
+        context = this;
 
         //allow backward navigation to parent activity via actionbar
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -45,6 +48,16 @@ public class NewsDetailActivity extends Activity {
         ImageView image = (ImageView) findViewById(R.id.newsDetailImageView);
         TextView body = (TextView) findViewById(R.id.newsDetailBody);
         TextView link = (TextView) findViewById(R.id.videoLink);
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int ID = news.getId();
+                Intent intent = new Intent(context, NewsImageActivity.class);
+                intent.putExtra("ID", ID);
+                context.startActivity(intent);
+            }
+        });
 
         try{
             Intent intent = getIntent();
