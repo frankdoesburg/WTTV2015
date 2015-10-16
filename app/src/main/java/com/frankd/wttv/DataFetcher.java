@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -297,7 +298,7 @@ public class DataFetcher {
 
 
                     }
-                }, 0, 0, null,
+                }, 0, 0, ImageView.ScaleType.CENTER_INSIDE, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         mainApplication.removePendingRequest();
@@ -321,7 +322,7 @@ public class DataFetcher {
 
 
                     }
-                }, 0, 0, null,
+                }, 0, 0,ImageView.ScaleType.CENTER_INSIDE, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         mainApplication.removePendingRequest();
@@ -353,7 +354,7 @@ public class DataFetcher {
 
 
                     }
-                }, 0, 0, null,
+                }, 0, 0,ImageView.ScaleType.CENTER_INSIDE, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         mainApplication.removePendingRequest();
@@ -377,7 +378,7 @@ public class DataFetcher {
 
 
                     }
-                }, 0, 0, null,
+                }, 0, 0, ImageView.ScaleType.CENTER_INSIDE, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         mainApplication.removePendingRequest();
